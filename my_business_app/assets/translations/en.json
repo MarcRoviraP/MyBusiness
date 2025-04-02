@@ -1,3 +1,9 @@
 {
-    "bienvenida": "Welcome to "
+    "bienvenida": "Welcome to ",
+    "start": "Home",
+    "business": "Business",
+    "join": "Join",
+    "create": "Create",
+    "join_business": "Join a business",
+    "create_business": "Create a business"
 }
