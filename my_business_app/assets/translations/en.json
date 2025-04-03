@@ -1,9 +1,15 @@
 {
-    "bienvenida": "Welcome to ",
-    "start": "Home",
-    "business": "Business",
-    "join": "Join",
-    "create": "Create",
-    "join_business": "Join a business",
-    "create_business": "Create a business"
+  "Login_error": "No user",
+  "Login_login": "Login",
+  "Login_mail": "Mail",
+  "Login_password": "Password",
+  "Login_register": "Register",
+  "Login_showpass": "Show password",
+  "bienvenida": "Welcome to ",
+  "business": "Business",
+  "create": "Create",
+  "create_business": "Create a business",
+  "join": "Join",
+  "join_business": "Join a business",
+  "start": "Home"
 }

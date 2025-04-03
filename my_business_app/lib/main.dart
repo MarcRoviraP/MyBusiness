@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:my_business_app/API_SUPABASE/supabase_service.dart';
 import 'package:my_business_app/Constants/constants.dart';
+import 'package:my_business_app/Screens/Login.dart';
 import 'package:my_business_app/Screens/MainScreen.dart';
 import 'package:my_business_app/Theme/theme.dart';
 
@@ -37,6 +38,6 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: MainScreen());
+        home: Login());
   }
 }
