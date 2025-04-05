@@ -19,7 +19,7 @@ void main() async {
 
   runApp(
     EasyLocalization(
-        child: MyApp(),
+        child: RestartMain(child: const MyApp()),
         supportedLocales: const [
           Locale('en'),
           Locale('es'),
@@ -102,6 +102,38 @@ class MyApp extends StatelessWidget {
             locale: context.locale,
             home: homeScreen);
       },
+    );
+  }
+}
+
+// Reinicia la app cuando al cambiar la key del widget esto produzca que se vuelva a construir el widget
+
+class RestartMain extends StatefulWidget {
+  final Widget child;
+  const RestartMain({Key? key, required this.child}) : super(key: key);
+
+  static void restartApp(BuildContext context) {
+    _RestartMainState? state =
+        context.findAncestorStateOfType<_RestartMainState>();
+    state?.restartApp();
+  }
+
+  @override
+  State<RestartMain> createState() => _RestartMainState();
+}
+
+class _RestartMainState extends State<RestartMain> {
+  Key _key = UniqueKey();
+  void restartApp() {
+    setState(() {
+      _key = UniqueKey();
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: _key,
+      child: widget.child,
     );
   }
 }
