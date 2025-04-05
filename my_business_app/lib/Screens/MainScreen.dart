@@ -1,7 +1,10 @@
+import 'package:MyBusiness/Constants/constants.dart';
+import 'package:MyBusiness/Dialog/SettingsDialog.dart';
+import 'package:MyBusiness/Screens/Login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:my_business_app/Screens/BusinessSelectorScreen.dart';
-import 'package:my_business_app/Screens/VideoWidget.dart';
+import 'package:MyBusiness/Screens/BusinessSelectorScreen.dart';
+import 'package:MyBusiness/Screens/VideoWidget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -52,9 +55,37 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout_outlined),
+            onPressed: cerrarSesion,
+          ),
+          IconButton(onPressed: openSettings, icon: Icon(Icons.settings)),
+        ],
         title: Text(''),
       ),
       body: screens[selectedIndex],
+    );
+  }
+
+  void cerrarSesion() {
+    Utils().setSharedString(shared_mail, "").then((value) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Login(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    });
+  }
+
+  void openSettings() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Settingsdialog();
+      },
     );
   }
 }

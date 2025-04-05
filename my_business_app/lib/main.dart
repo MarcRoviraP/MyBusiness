@@ -1,10 +1,15 @@
+import 'package:MyBusiness/Theme/Theme0063D8.dart';
+import 'package:MyBusiness/Theme/Theme63A002.dart';
+import 'package:MyBusiness/Theme/Theme949CAE.dart';
+import 'package:MyBusiness/Theme/ThemeB11AC1.dart';
+import 'package:MyBusiness/Theme/ThemeFF6D66.dart';
+import 'package:MyBusiness/Theme/ThemeFFDE3F.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:my_business_app/API_SUPABASE/supabase_service.dart';
-import 'package:my_business_app/Constants/constants.dart';
-import 'package:my_business_app/Screens/Login.dart';
-import 'package:my_business_app/Screens/MainScreen.dart';
-import 'package:my_business_app/Theme/theme.dart';
+import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
+import 'package:MyBusiness/Constants/constants.dart';
+import 'package:MyBusiness/Screens/Login.dart';
+import 'package:MyBusiness/Screens/MainScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,12 +37,71 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: ThemeData.from(colorScheme: MaterialTheme.lightScheme()),
-        darkTheme: ThemeData.from(colorScheme: MaterialTheme.darkScheme()),
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        home: Login());
+    ColorScheme temaLight = ThemeFFDE3F.lightScheme();
+    ColorScheme temaDark = ThemeFFDE3F.darkScheme();
+    Widget homeScreen = Login();
+
+    return FutureBuilder(
+      future: Future.wait(
+        [
+          Utils().getSharedString(shared_mail),
+          Utils().getSharedString(shared_theme),
+        ],
+      ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error'));
+        } else {
+          var response = snapshot.data;
+          response ??= ["", ""];
+
+          String mail = response[0].toString();
+          String theme = response[1].toString();
+
+          if (mail != "") {
+            homeScreen = MainScreen();
+          }
+
+          switch (theme) {
+            case "#FFDE3F":
+              temaLight = ThemeFFDE3F.lightScheme();
+              temaDark = ThemeFFDE3F.darkScheme();
+              break;
+            case "#949CAE":
+              temaLight = Theme949CAE.lightScheme();
+              temaDark = Theme949CAE.darkScheme();
+              break;
+            case "#FF6D66":
+              temaLight = ThemeFF6D66.lightScheme();
+              temaDark = ThemeFF6D66.darkScheme();
+              break;
+            case "#63A002":
+              temaLight = Theme63A002.lightScheme();
+              temaDark = Theme63A002.darkScheme();
+              break;
+            case "#0063D8":
+              temaLight = Theme0063D8.lightScheme();
+              temaDark = Theme0063D8.darkScheme();
+              break;
+            case "#B11AC1":
+              temaLight = ThemeB11AC1.lightScheme();
+              temaDark = ThemeB11AC1.darkScheme();
+              break;
+            default:
+              break;
+          }
+        }
+        return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData.from(colorScheme: temaLight),
+            darkTheme: ThemeData.from(colorScheme: temaDark),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            home: homeScreen);
+      },
+    );
   }
 }

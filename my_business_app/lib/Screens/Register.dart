@@ -3,19 +3,20 @@ import 'dart:math';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:MyBusiness/Constants/constants.dart';
+import 'package:MyBusiness/Screens/Login.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
-import 'package:MyBusiness/Screens/Register.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
-class Login extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool showPassword = false;
@@ -25,7 +26,10 @@ class _LoginState extends State<Login> {
   Timer? _timer;
 
   final GlobalKey<FormFieldState> _emailKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> _usernameKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> _passwordKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> _confirmPasswordKey =
+      GlobalKey<FormFieldState>();
 
   @override
   void initState() {
@@ -103,6 +107,22 @@ class _LoginState extends State<Login> {
                     ).animate().slideY(begin: -1, duration: 600.ms),
                     SizedBox(height: 10),
                     TextFormField(
+                      validator: Validators.required(
+                          LocaleKeys.Register_required_field.tr()),
+                      key: _usernameKey,
+                      keyboardType: TextInputType.name,
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        hintText: LocaleKeys.Register_username.tr(),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ).animate().slideY(begin: -1, duration: 600.ms),
+                    SizedBox(height: 10),
+                    TextFormField(
                       validator: Validators.compose([
                         Validators.required(
                             LocaleKeys.Register_required_field.tr()),
@@ -115,6 +135,32 @@ class _LoginState extends State<Login> {
                       obscureText: !showPassword,
                       decoration: InputDecoration(
                         hintText: LocaleKeys.Login_password.tr(),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ).animate().slideY(begin: 1, duration: 600.ms),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      validator: Validators.compose([
+                        Validators.required(
+                            LocaleKeys.Register_required_field.tr()),
+                        Validators.minLength(
+                            6, LocaleKeys.Register_password_lenght.tr()),
+                        (value) {
+                          if (value != _passwordController.text) {
+                            return LocaleKeys.Register_no_same_pass.tr();
+                          }
+                          return null;
+                        }
+                      ]),
+                      key: _confirmPasswordKey,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: !showPassword,
+                      decoration: InputDecoration(
+                        hintText: LocaleKeys.Register_confirm_pass.tr(),
                         filled: true,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -140,7 +186,7 @@ class _LoginState extends State<Login> {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        iniciarSesion();
+                        register();
                       },
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -150,14 +196,14 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       child: Text(
-                        LocaleKeys.Login_login.tr(),
+                        LocaleKeys.Register_register.tr(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ).animate().scale(duration: 400.ms),
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        registro();
+                        backToLogin();
                       },
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -167,7 +213,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       child: Text(
-                        LocaleKeys.Login_register.tr(),
+                        LocaleKeys.Register_login.tr(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ).animate().scale(duration: 400.ms),
@@ -181,16 +227,16 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void iniciarSesion() {
-    String username = _emailController.text;
+  void register() {
+    String username = _usernameController.text;
+    String mail = _emailController.text;
     String password = _passwordController.text;
 
     if (_emailKey.currentState?.validate() == true &&
-        _passwordKey.currentState?.validate() == true) {
-      // Ir a la pantalla principal
-      Utils().getUser(username, password).then((value) {
+        _passwordKey.currentState?.validate() == true &&
+        _confirmPasswordKey.currentState?.validate() == true) {
+      Utils().setUser(username, mail, password).then((value) {
         if (value) {
-          // Si el usuario existe, ir a la pantalla principal
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -206,7 +252,6 @@ class _LoginState extends State<Login> {
                   style:
                       TextStyle(color: const Color.fromARGB(255, 240, 16, 0))),
               backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-              duration: const Duration(seconds: 2),
             ),
           );
         }
@@ -214,11 +259,11 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void registro() {
+  void backToLogin() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Register(),
+        builder: (context) => Login(),
       ),
     );
   }

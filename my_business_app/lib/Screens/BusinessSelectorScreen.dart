@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:my_business_app/Screens/BusinessSelectorScreen.dart';
-import 'package:my_business_app/Screens/CreateBusiness.dart';
-import 'package:my_business_app/Screens/JoinBusiness.dart';
-import 'package:my_business_app/Screens/VideoWidget.dart';
+import 'package:MyBusiness/Screens/BusinessSelectorScreen.dart';
+import 'package:MyBusiness/Screens/CreateBusiness.dart';
+import 'package:MyBusiness/Screens/JoinBusiness.dart';
+import 'package:MyBusiness/Screens/VideoWidget.dart';
 
 class Businessselectorscreen extends StatefulWidget {
   const Businessselectorscreen({super.key});

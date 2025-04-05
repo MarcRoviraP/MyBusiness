@@ -1,5 +1,5 @@
 // lib/services/supabase_service.dart
-import 'package:my_business_app/Constants/constants.dart';
+import 'package:MyBusiness/Constants/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseService {

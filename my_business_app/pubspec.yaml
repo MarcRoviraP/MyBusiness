@@ -1,4 +1,4 @@
-name: my_business_app
+name: MyBusiness
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -45,6 +45,7 @@ dependencies:
   supabase_flutter: ^2.8.4
   youtube_player_flutter: ^9.1.1
   flutter_animate: ^4.5.2
+  crypto: ^3.0.6
 
 dev_dependencies:
   flutter_test:
