@@ -11,6 +11,10 @@ class Joinbusiness extends StatefulWidget {
 class _JoinbusinessState extends State<Joinbusiness> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("join_business").tr());
+    return Scaffold(
+      body: Stack(
+        children: [],
+      ),
+    );
   }
 }

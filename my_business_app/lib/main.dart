@@ -67,27 +67,27 @@ class MyApp extends StatelessWidget {
           switch (theme) {
             case "#FFDE3F":
               temaLight = ThemeFFDE3F.lightScheme();
-              temaDark = ThemeFFDE3F.darkScheme();
+              temaDark = ThemeFFDE3F.darkHighContrastScheme();
               break;
             case "#949CAE":
               temaLight = Theme949CAE.lightScheme();
-              temaDark = Theme949CAE.darkScheme();
+              temaDark = Theme949CAE.darkHighContrastScheme();
               break;
             case "#FF6D66":
               temaLight = ThemeFF6D66.lightScheme();
-              temaDark = ThemeFF6D66.darkScheme();
+              temaDark = ThemeFF6D66.darkHighContrastScheme();
               break;
             case "#63A002":
               temaLight = Theme63A002.lightScheme();
-              temaDark = Theme63A002.darkScheme();
+              temaDark = Theme63A002.darkHighContrastScheme();
               break;
             case "#0063D8":
               temaLight = Theme0063D8.lightScheme();
-              temaDark = Theme0063D8.darkScheme();
+              temaDark = Theme0063D8.darkHighContrastScheme();
               break;
             case "#B11AC1":
               temaLight = ThemeB11AC1.lightScheme();
-              temaDark = ThemeB11AC1.darkScheme();
+              temaDark = ThemeB11AC1.darkHighContrastScheme();
               break;
             default:
               break;
@@ -129,6 +129,7 @@ class _RestartMainState extends State<RestartMain> {
       _key = UniqueKey();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return KeyedSubtree(

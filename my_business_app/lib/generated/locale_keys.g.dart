@@ -2,7 +2,10 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
+  static const CreateBusiness_business_created = 'CreateBusiness_business_created';
+  static const CreateBusiness_business_name = 'CreateBusiness_business_name';
+  static const CreateBusiness_phone = 'CreateBusiness_phone';
   static const Login_error = 'Login_error';
   static const Login_login = 'Login_login';
   static const Login_mail = 'Login_mail';
@@ -18,11 +21,10 @@ abstract class LocaleKeys {
   static const Register_required_field = 'Register_required_field';
   static const Register_user_exist = 'Register_user_exist';
   static const Register_username = 'Register_username';
-  static const SettingsDialog_save = 'SettingsDialog_save';
   static const SettingsDialog_notifi = 'SettingsDialog_notifi';
   static const SettingsDialog_reboot = 'SettingsDialog_reboot';
-  static const SettingsDialog_required_to_see_changes =
-      'SettingsDialog_required_to_see_changes';
+  static const SettingsDialog_required_to_see_changes = 'SettingsDialog_required_to_see_changes';
+  static const SettingsDialog_save = 'SettingsDialog_save';
   static const SettingsDialog_settings = 'SettingsDialog_settings';
   static const SettingsDialog_theme = 'SettingsDialog_theme';
   static const bienvenida = 'bienvenida';
@@ -32,4 +34,5 @@ abstract class LocaleKeys {
   static const join = 'join';
   static const join_business = 'join_business';
   static const start = 'start';
+
 }

@@ -2,13 +2,20 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 String password = "1u5vxhBJewQIVPR8";
 String token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaHB6ZnVtbG5vYXhocWFwYmt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDQ4NjMsImV4cCI6MjA1OTAyMDg2M30.HZxso5szAGxM4oVOBshU24DHdR0NHUS-P2Ogh8gD9JY";
 String shared_mail = "mail";
 String shared_theme = "tema";
+bool currentLocations = false;
+String direccion = '';
 
 class Utils {
   Future<List<dynamic>> getList(String buscar) async {
@@ -22,8 +29,8 @@ class Utils {
         .select('*')
         .eq('correo', mail)
         .eq('contraseña', convertToSha256(password));
-        
-      setSharedString(shared_mail, mail);
+
+    setSharedString(shared_mail, mail);
     return response.isNotEmpty;
   }
 
@@ -59,5 +66,119 @@ class Utils {
   Future<String> getSharedString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? "";
+  }
+}
+
+// Widget de mapa para seleccionar la ubicación de la empresa
+class MapaEmpresaWidget extends StatefulWidget {
+  @override
+  _MapaEmpresaWidgetState createState() => _MapaEmpresaWidgetState();
+}
+
+class _MapaEmpresaWidgetState extends State<MapaEmpresaWidget> {
+  LatLng _selectedLocation =
+      LatLng(39.4625, -0.3739);
+
+  @override
+  Widget build(BuildContext context) {
+    if (currentLocations) return mapa();
+    return FutureBuilder(
+      future: _determinePosition(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else {
+          Position position = snapshot.data as Position;
+          _selectedLocation = LatLng(position.latitude, position.longitude);
+          currentLocations = true;
+        }
+        return mapa();
+      },
+    );
+  }
+
+  Column mapa() {
+    direccion = "${_selectedLocation.latitude},${_selectedLocation.longitude}";
+
+    return Column(
+      children: [
+        Expanded(
+          child: FlutterMap(
+            options: MapOptions(
+              initialCenter: _selectedLocation,
+              initialZoom: 13.0,
+              onTap: (tapPosition, point) {
+                setState(() {
+                  _selectedLocation = point;
+                  direccion = "${point.latitude},${point.longitude}";
+                });
+              },
+            ),
+            children: [
+              TileLayer(
+                urlTemplate:
+                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                subdomains: ['a', 'b', 'c'],
+                userAgentPackageName: 'com.example.app',
+              ),
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    width: 80.0,
+                    height: 80.0,
+                    point: _selectedLocation,
+                    child: const Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                      size: 40.0,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<Position> _determinePosition() async {
+    LocationPermission permission;
+
+    bool permissionEnabled = true;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) permissionEnabled = false;
+    }
+
+    if (permission == LocationPermission.deniedForever)
+      permissionEnabled = false;
+    if (!permissionEnabled) {
+      currentLocations = false;
+      return Future.value(
+        Position(
+          latitude: 39.4625,
+          longitude: -0.3739,
+          timestamp: DateTime.now(),
+          accuracy: 1.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 1.0,
+          altitudeAccuracy: 1.0,
+          headingAccuracy: 1.0,
+        ),
+      );
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 }
