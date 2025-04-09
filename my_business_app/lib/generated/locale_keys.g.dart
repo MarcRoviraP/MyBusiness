@@ -4,6 +4,7 @@
 
 abstract class  LocaleKeys {
   static const CreateBusiness_business_created = 'CreateBusiness_business_created';
+  static const CreateBusiness_business_error = 'CreateBusiness_business_error';
   static const CreateBusiness_business_name = 'CreateBusiness_business_name';
   static const CreateBusiness_phone = 'CreateBusiness_phone';
   static const Login_error = 'Login_error';

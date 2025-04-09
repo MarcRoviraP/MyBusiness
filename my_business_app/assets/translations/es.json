@@ -1,5 +1,6 @@
 {
   "CreateBusiness_business_created": "El negocio ha sido creado.",
+  "CreateBusiness_business_error": "Se ha producido un error, prueba con otro nombre.",
   "CreateBusiness_business_name": "Nombre negocio",
   "CreateBusiness_phone": "Teléfono",
   "Login_error": "No existe el usuario",
@@ -15,7 +16,7 @@
   "Register_password_lenght": "La contraseña debe tener al menos 6 caracteres",
   "Register_register": "Registrar",
   "Register_required_field": "Campo requerido",
-  "Register_user_exist": "El correo o el nombre de usuario estan en uso",
+  "Register_user_exist": "El usuario ya existe.",
   "Register_username": "Nombre de usuario",
   "SettingsDialog_notifi": "Notificaciones",
   "SettingsDialog_reboot": "Reiniciar",

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -100,18 +102,22 @@ class _CreatebusinessState extends State<Createbusiness> {
         'direccion': direccionBusiness,
         'telefono': telefon,
       }, 'empresas').then((value) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(LocaleKeys.CreateBusiness_business_created.tr()),
-          ),
-        );
+        if (value.isEmpty) {
+          customErrorSnackbar(
+              LocaleKeys.CreateBusiness_business_error.tr(), context);
+        } else {
+          String id_empresa = value[0]['id_empresa'].toString();
+          Utils().getSharedString(shared_id).then((value) {
+            Utils().insertInTable({
+              'id_usuario': int.parse(value),
+              'id_empresa': int.parse(id_empresa),
+              'rol': 'Administrador',
+            }, 'usuario_empresa');
+          });
+          customSuccessSnackbar(
+              LocaleKeys.CreateBusiness_business_created.tr(), context);
+        }
       });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(LocaleKeys.Register_required_field.tr()),
-        ),
-      );
     }
   }
 }

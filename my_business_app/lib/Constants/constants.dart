@@ -13,9 +13,32 @@ String password = "1u5vxhBJewQIVPR8";
 String token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaHB6ZnVtbG5vYXhocWFwYmt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDQ4NjMsImV4cCI6MjA1OTAyMDg2M30.HZxso5szAGxM4oVOBshU24DHdR0NHUS-P2Ogh8gD9JY";
 String shared_mail = "mail";
+String shared_id = "user_id";
 String shared_theme = "tema";
 bool currentLocations = false;
 String direccion = '';
+
+void customErrorSnackbar(String message, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message,
+          style: TextStyle(color: const Color.fromARGB(255, 240, 16, 0))),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      duration: const Duration(seconds: 2),
+    ),
+  );
+}
+
+void customSuccessSnackbar(String message, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message,
+          style: TextStyle(color: const Color.fromARGB(255, 52, 240, 0))),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      duration: const Duration(seconds: 2),
+    ),
+  );
+}
 
 class Utils {
   Future<List<dynamic>> getList(String buscar) async {
@@ -23,28 +46,16 @@ class Utils {
     return response as List<dynamic>;
   }
 
-  Future<bool> getUser(String mail, String password) async {
-    final response = await supabaseService.client
-        .from('usuarios')
-        .select('*')
-        .eq('correo', mail)
-        .eq('contraseña', convertToSha256(password));
-
-    setSharedString(shared_mail, mail);
-    return response.isNotEmpty;
-  }
-
-  Future<bool> setUser(String name, String mail, String password) async {
+  Future<List<dynamic>> getUser(String mail, String password) async {
     try {
-      final response = await supabaseService.client.from('usuarios').insert({
-        'nombre': name,
-        'correo': mail,
-        'contraseña': convertToSha256(password),
-      }).select();
-      setSharedString(shared_mail, mail);
-      return response.isNotEmpty;
-    } catch (exception) {
-      return false;
+      final response = await supabaseService.client
+          .from('usuarios')
+          .select('*')
+          .eq('correo', mail)
+          .eq('contraseña', convertToSha256(password));
+      return response;
+    } catch (e) {
+      return [];
     }
   }
 
@@ -54,10 +65,27 @@ class Utils {
     return hash;
   }
 
-  Future<void> insertInTable(Map<String, dynamic> params, String tabla) async {
-    final response = await supabaseService.client.from(tabla).insert(params);
+  Future<List<dynamic>> insertInTable(
+      Map<String, dynamic> params, String tabla) async {
+    try {
+      var response =
+          await supabaseService.client.from(tabla).insert(params).select("*");
+      return response;
+    } catch (e) {
+      return [];
+    }
   }
 
+Future<List<dynamic>> insertInTable2(
+      Map<String, dynamic> params, String tabla) async {
+    try {
+      var response =
+          await supabaseService.client.from(tabla).insert(params);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
   Future<void> setSharedString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(key, value);
@@ -76,8 +104,7 @@ class MapaEmpresaWidget extends StatefulWidget {
 }
 
 class _MapaEmpresaWidgetState extends State<MapaEmpresaWidget> {
-  LatLng _selectedLocation =
-      LatLng(39.4625, -0.3739);
+  LatLng _selectedLocation = LatLng(39.4625, -0.3739);
 
   @override
   Widget build(BuildContext context) {

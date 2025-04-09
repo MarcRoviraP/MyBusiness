@@ -235,8 +235,20 @@ class _RegisterState extends State<Register> {
     if (_emailKey.currentState?.validate() == true &&
         _passwordKey.currentState?.validate() == true &&
         _confirmPasswordKey.currentState?.validate() == true) {
-      Utils().setUser(username, mail, password).then((value) {
-        if (value) {
+      Utils().insertInTable(
+        {
+          "nombre": username,
+          "correo": mail,
+          "contraseña": Utils().convertToSha256(password),
+        },
+        "usuarios",
+      ).then((value) {
+        if (value.isNotEmpty) {
+          String mail = value[0]['correo'].toString();
+          String id = value[0]['id_usuario'].toString();
+
+          Utils().setSharedString(shared_mail, mail);
+          Utils().setSharedString(shared_id, id);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -246,14 +258,7 @@ class _RegisterState extends State<Register> {
           );
         } else {
           // Si el usuario no existe, mostrar un mensaje de error
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(LocaleKeys.Login_error.tr(),
-                  style:
-                      TextStyle(color: const Color.fromARGB(255, 240, 16, 0))),
-              backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-            ),
-          );
+          customErrorSnackbar(LocaleKeys.Register_user_exist.tr(), context);
         }
       });
     }

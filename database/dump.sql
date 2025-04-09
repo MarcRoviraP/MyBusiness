@@ -7,7 +7,7 @@ CREATE TABLE Usuarios (
 
 CREATE TABLE Empresas (
     id_empresa SERIAL PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
+    nombre VARCHAR(255) UNIQUE NOT NULL,
     direccion VARCHAR(255),
     telefono VARCHAR(50)
 );

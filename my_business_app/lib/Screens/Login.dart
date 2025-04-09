@@ -182,15 +182,18 @@ class _LoginState extends State<Login> {
   }
 
   void iniciarSesion() {
-    String username = _emailController.text;
+    String mail = _emailController.text;
     String password = _passwordController.text;
 
     if (_emailKey.currentState?.validate() == true &&
         _passwordKey.currentState?.validate() == true) {
-      // Ir a la pantalla principal
-      Utils().getUser(username, password).then((value) {
-        if (value) {
-          // Si el usuario existe, ir a la pantalla principal
+
+      Utils().getUser(mail, password).then((value) {
+        if (value.isNotEmpty) {
+          String id = value[0]['id_usuario'].toString();
+
+          Utils().setSharedString(shared_mail, mail);
+          Utils().setSharedString(shared_id, id);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -200,15 +203,7 @@ class _LoginState extends State<Login> {
           );
         } else {
           // Si el usuario no existe, mostrar un mensaje de error
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(LocaleKeys.Login_error.tr(),
-                  style:
-                      TextStyle(color: const Color.fromARGB(255, 240, 16, 0))),
-              backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-              duration: const Duration(seconds: 2),
-            ),
-          );
+          customErrorSnackbar(LocaleKeys.Login_error.tr(), context);
         }
       });
     }
