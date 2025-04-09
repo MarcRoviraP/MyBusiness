@@ -1,5 +1,7 @@
+import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Dialog/SettingsDialog.dart';
+import 'package:MyBusiness/Screens/BusinessScreen.dart';
 import 'package:MyBusiness/Screens/Login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +29,7 @@ class _MainScreenState extends State<MainScreen> {
         onDestinationSelected: (value) {
           setState(() {
             if (value == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Businessselectorscreen()),
-              );
+              startBusinessScreen(context);
             } else {
               selectedIndex = value;
             }
@@ -66,6 +64,29 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: screens[selectedIndex],
     );
+  }
+
+  void startBusinessScreen(BuildContext context) {
+    // Busca si existe el id de usuario en la tabla usuario_empresa
+    Utils().getUserEmpresa(usuario.id_usuario.toString()).then((value) {
+      if (value.isNotEmpty) {
+        Utils().getEmpresa(value[0]['id_empresa'].toString()).then((value) {
+          empresa = Empresa.fromJson(value[0]);
+
+          // Si existe, redirigir a la pantalla de empresa
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Businessscreen()),
+          );
+        });
+      } else {
+        // Si no existe, redirigir a la pantalla de creación de empresa
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Businessselectorscreen()),
+        );
+      }
+    });
   }
 
   void cerrarSesion() {

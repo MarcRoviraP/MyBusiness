@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:MyBusiness/Class/Empresa.dart';
+import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:crypto/crypto.dart';
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,10 +15,19 @@ String password = "1u5vxhBJewQIVPR8";
 String token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaHB6ZnVtbG5vYXhocWFwYmt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0NDQ4NjMsImV4cCI6MjA1OTAyMDg2M30.HZxso5szAGxM4oVOBshU24DHdR0NHUS-P2Ogh8gD9JY";
 String shared_mail = "mail";
-String shared_id = "user_id";
+String shared_userid = "user_id";
+String shared_empresa_id = "empresa_id";
 String shared_theme = "tema";
 bool currentLocations = false;
-String direccion = '';
+String direccion = "";
+Empresa empresa =
+    Empresa(id_empresa: 0, nombre: "", direccion: "", telefono: "");
+Usuario usuario = Usuario(
+  id_usuario: 0,
+  nombre: "",
+  correo: "",
+  contrasenya: "",
+);
 
 void customErrorSnackbar(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -46,13 +57,48 @@ class Utils {
     return response as List<dynamic>;
   }
 
-  Future<List<dynamic>> getUser(String mail, String password) async {
+  Future<List<dynamic>> getUserLogin(String mail, String password) async {
     try {
       final response = await supabaseService.client
           .from('usuarios')
           .select('*')
           .eq('correo', mail)
           .eq('contraseña', convertToSha256(password));
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+  Future<List<dynamic>> getUserMail(String mail) async {
+    try {
+      final response = await supabaseService.client
+          .from('usuarios')
+          .select('*')
+          .eq('correo', mail);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getEmpresa(String id_empresa) async {
+    try {
+      final response = await supabaseService.client
+          .from('empresas')
+          .select('*')
+          .eq('id_empresa', id_empresa);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getUserEmpresa(String id) async {
+    try {
+      final response = await supabaseService.client
+          .from('usuario_empresa')
+          .select('*')
+          .eq('id_usuario', id);
       return response;
     } catch (e) {
       return [];
@@ -76,16 +122,16 @@ class Utils {
     }
   }
 
-Future<List<dynamic>> insertInTable2(
+  Future<List<dynamic>> insertInTable2(
       Map<String, dynamic> params, String tabla) async {
     try {
-      var response =
-          await supabaseService.client.from(tabla).insert(params);
+      var response = await supabaseService.client.from(tabla).insert(params);
       return response;
     } catch (e) {
       return [];
     }
   }
+
   Future<void> setSharedString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(key, value);

@@ -1,3 +1,4 @@
+import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:MyBusiness/Theme/Theme0063D8.dart';
 import 'package:MyBusiness/Theme/Theme63A002.dart';
 import 'package:MyBusiness/Theme/Theme949CAE.dart';
@@ -61,7 +62,11 @@ class MyApp extends StatelessWidget {
           String theme = response[1].toString();
 
           if (mail != "") {
-            homeScreen = MainScreen();
+            Utils().getUserMail(mail).then((value){
+
+              usuario = Usuario.fromJson(value[0]); 
+            });
+              homeScreen = MainScreen();
           }
 
           switch (theme) {

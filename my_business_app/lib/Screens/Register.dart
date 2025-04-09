@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/Login.dart';
@@ -245,10 +246,9 @@ class _RegisterState extends State<Register> {
       ).then((value) {
         if (value.isNotEmpty) {
           String mail = value[0]['correo'].toString();
-          String id = value[0]['id_usuario'].toString();
 
+        usuario = Usuario.fromJson(value[0]);
           Utils().setSharedString(shared_mail, mail);
-          Utils().setSharedString(shared_id, id);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

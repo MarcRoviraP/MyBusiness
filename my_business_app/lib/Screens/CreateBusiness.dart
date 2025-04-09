@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
+import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Constants/constants.dart';
+import 'package:MyBusiness/Screens/BusinessScreen.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -106,16 +108,20 @@ class _CreatebusinessState extends State<Createbusiness> {
           customErrorSnackbar(
               LocaleKeys.CreateBusiness_business_error.tr(), context);
         } else {
+          empresa = Empresa.fromJson(value[0]);
           String id_empresa = value[0]['id_empresa'].toString();
-          Utils().getSharedString(shared_id).then((value) {
-            Utils().insertInTable({
-              'id_usuario': int.parse(value),
-              'id_empresa': int.parse(id_empresa),
-              'rol': 'Administrador',
-            }, 'usuario_empresa');
-          });
+          Utils().insertInTable({
+            'id_usuario': int.parse(usuario.id_usuario.toString()),
+            'id_empresa': int.parse(id_empresa),
+            'rol': 'Administrador',
+          }, 'usuario_empresa');
+
           customSuccessSnackbar(
               LocaleKeys.CreateBusiness_business_created.tr(), context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Businessscreen()),
+          );
         }
       });
     }
