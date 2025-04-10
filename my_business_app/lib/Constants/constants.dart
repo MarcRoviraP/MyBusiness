@@ -93,12 +93,12 @@ class Utils {
     }
   }
 
-  Future<List<dynamic>> getUserEmpresa(String id) async {
+  Future<List<dynamic>> getUserEmpresa(String id_usuario) async {
     try {
       final response = await supabaseService.client
           .from('usuario_empresa')
           .select('*')
-          .eq('id_usuario', id);
+          .eq('id_usuario', id_usuario);
       return response;
     } catch (e) {
       return [];

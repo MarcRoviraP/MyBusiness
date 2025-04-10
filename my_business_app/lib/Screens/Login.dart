@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:MyBusiness/Screens/Register.dart';
@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
                       lockIcon.icon,
                       size: 50,
                       color: Colors.white,
-                    ).animate().scale(duration: 500.ms).fadeIn(),
+                    ),
                     SizedBox(height: 20),
                     TextFormField(
                       validator: Validators.compose([
@@ -101,7 +101,7 @@ class _LoginState extends State<Login> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                    ).animate().slideY(begin: -1, duration: 600.ms),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       validator: Validators.compose([
@@ -122,22 +122,20 @@ class _LoginState extends State<Login> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                    ).animate().slideY(begin: 1, duration: 600.ms),
+                    ),
                     CheckboxListTile(
-                            value: showPassword,
-                            onChanged: (value) {
-                              setState(() {
-                                showPassword = value!;
-                                if (showPassword) {
-                                  lockIcon = Icon(Icons.lock_open);
-                                } else {
-                                  lockIcon = Icon(Icons.lock_outline);
-                                }
-                              });
-                            },
-                            title: Text(LocaleKeys.Login_showpass.tr()))
-                        .animate()
-                        .slideY(begin: 1, duration: 600.ms),
+                        value: showPassword,
+                        onChanged: (value) {
+                          setState(() {
+                            showPassword = value!;
+                            if (showPassword) {
+                              lockIcon = Icon(Icons.lock_open);
+                            } else {
+                              lockIcon = Icon(Icons.lock_outline);
+                            }
+                          });
+                        },
+                        title: Text(LocaleKeys.Login_showpass.tr())),
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
@@ -154,7 +152,7 @@ class _LoginState extends State<Login> {
                         LocaleKeys.Login_login.tr(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ).animate().scale(duration: 400.ms),
+                    ),
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
@@ -171,7 +169,7 @@ class _LoginState extends State<Login> {
                         LocaleKeys.Login_register.tr(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ).animate().scale(duration: 400.ms),
+                    )
                   ],
                 ),
               ),
@@ -201,6 +199,16 @@ class _LoginState extends State<Login> {
             ),
             (Route<dynamic> route) => false,
           );
+
+          Utils().getUserEmpresa(usuario.id_usuario.toString()).then((value) {
+            if (value.isNotEmpty) {
+              Utils()
+                  .getEmpresa(value[0]['id_empresa'].toString())
+                  .then((value) {
+                empresa = Empresa.fromJson(value[0]);
+              });
+            }
+          });
         } else {
           // Si el usuario no existe, mostrar un mensaje de error
           customErrorSnackbar(LocaleKeys.Login_error.tr(), context);

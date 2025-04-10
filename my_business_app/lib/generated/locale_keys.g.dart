@@ -7,6 +7,11 @@ abstract class  LocaleKeys {
   static const CreateBusiness_business_error = 'CreateBusiness_business_error';
   static const CreateBusiness_business_name = 'CreateBusiness_business_name';
   static const CreateBusiness_phone = 'CreateBusiness_phone';
+  static const JoinBusiness_enter_business_id = 'JoinBusiness_enter_business_id';
+  static const JoinBusiness_join_request = 'JoinBusiness_join_request';
+  static const JoinBusiness_request_send_message = 'JoinBusiness_request_send_message';
+  static const JoinBusiness_request_send_title = 'JoinBusiness_request_send_title';
+  static const JoinBusiness_scanner_empresa = 'JoinBusiness_scanner_empresa';
   static const Login_error = 'Login_error';
   static const Login_login = 'Login_login';
   static const Login_mail = 'Login_mail';

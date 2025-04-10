@@ -1,3 +1,4 @@
+import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:MyBusiness/Theme/Theme0063D8.dart';
 import 'package:MyBusiness/Theme/Theme63A002.dart';
@@ -62,11 +63,21 @@ class MyApp extends StatelessWidget {
           String theme = response[1].toString();
 
           if (mail != "") {
-            Utils().getUserMail(mail).then((value){
-
-              usuario = Usuario.fromJson(value[0]); 
+            Utils().getUserMail(mail).then((value) {
+              usuario = Usuario.fromJson(value[0]);
+              Utils()
+                  .getUserEmpresa(usuario.id_usuario.toString())
+                  .then((value) {
+                if (value.isNotEmpty) {
+                  Utils()
+                      .getEmpresa(value[0]['id_empresa'].toString())
+                      .then((value) {
+                    empresa = Empresa.fromJson(value[0]);
+                  });
+                }
+              });
             });
-              homeScreen = MainScreen();
+            homeScreen = MainScreen();
           }
 
           switch (theme) {

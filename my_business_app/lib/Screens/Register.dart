@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:MyBusiness/Class/Usuario.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/Login.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
@@ -86,7 +85,7 @@ class _RegisterState extends State<Register> {
                       lockIcon.icon,
                       size: 50,
                       color: Colors.white,
-                    ).animate().scale(duration: 500.ms).fadeIn(),
+                    ),
                     SizedBox(height: 20),
                     TextFormField(
                       validator: Validators.compose([
@@ -105,7 +104,7 @@ class _RegisterState extends State<Register> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                    ).animate().slideY(begin: -1, duration: 600.ms),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       validator: Validators.required(
@@ -121,7 +120,7 @@ class _RegisterState extends State<Register> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                    ).animate().slideY(begin: -1, duration: 600.ms),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       validator: Validators.compose([
@@ -142,7 +141,7 @@ class _RegisterState extends State<Register> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                    ).animate().slideY(begin: 1, duration: 600.ms),
+                    ),
                     SizedBox(height: 10),
                     TextFormField(
                       validator: Validators.compose([
@@ -168,22 +167,20 @@ class _RegisterState extends State<Register> {
                           borderSide: BorderSide.none,
                         ),
                       ),
-                    ).animate().slideY(begin: 1, duration: 600.ms),
+                    ),
                     CheckboxListTile(
-                            value: showPassword,
-                            onChanged: (value) {
-                              setState(() {
-                                showPassword = value!;
-                                if (showPassword) {
-                                  lockIcon = Icon(Icons.lock_open);
-                                } else {
-                                  lockIcon = Icon(Icons.lock_outline);
-                                }
-                              });
-                            },
-                            title: Text(LocaleKeys.Login_showpass.tr()))
-                        .animate()
-                        .slideY(begin: 1, duration: 600.ms),
+                        value: showPassword,
+                        onChanged: (value) {
+                          setState(() {
+                            showPassword = value!;
+                            if (showPassword) {
+                              lockIcon = Icon(Icons.lock_open);
+                            } else {
+                              lockIcon = Icon(Icons.lock_outline);
+                            }
+                          });
+                        },
+                        title: Text(LocaleKeys.Login_showpass.tr())),
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
@@ -200,7 +197,7 @@ class _RegisterState extends State<Register> {
                         LocaleKeys.Register_register.tr(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ).animate().scale(duration: 400.ms),
+                    ),
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
@@ -217,7 +214,7 @@ class _RegisterState extends State<Register> {
                         LocaleKeys.Register_login.tr(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ).animate().scale(duration: 400.ms),
+                    ),
                   ],
                 ),
               ),
@@ -247,7 +244,7 @@ class _RegisterState extends State<Register> {
         if (value.isNotEmpty) {
           String mail = value[0]['correo'].toString();
 
-        usuario = Usuario.fromJson(value[0]);
+          usuario = Usuario.fromJson(value[0]);
           Utils().setSharedString(shared_mail, mail);
           Navigator.pushAndRemoveUntil(
             context,
