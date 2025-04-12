@@ -10,6 +10,13 @@ class Scannerqr extends StatefulWidget {
 }
 
 class _ScannerqrState extends State<Scannerqr> {
+  String code = "";
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   final MobileScannerController controller = MobileScannerController();
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,9 @@ class _ScannerqrState extends State<Scannerqr> {
           onDetect: (capture) {
             final List<Barcode> barcodes = capture.barcodes;
             for (final barcode in barcodes) {
-              final String code = barcode.rawValue ?? '---';
+              String value = barcode.rawValue ?? "";
+              if (code == value) break;
+              code = value;
               widget.onCodeScanned?.call(code);
               break;
             }

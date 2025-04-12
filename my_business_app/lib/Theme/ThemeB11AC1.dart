@@ -344,7 +344,7 @@ class ThemeB11AC1 {
        bodyColor: colorScheme.onSurface,
        displayColor: colorScheme.onSurface,
      ),
-     scaffoldBackgroundColor: colorScheme.background,
+     scaffoldBackgroundColor: colorScheme.surface,
      canvasColor: colorScheme.surface,
   );
 

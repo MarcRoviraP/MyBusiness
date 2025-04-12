@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   _LoginState createState() => _LoginState();
 }

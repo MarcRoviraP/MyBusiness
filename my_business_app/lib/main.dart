@@ -21,14 +21,14 @@ void main() async {
 
   runApp(
     EasyLocalization(
-        child: RestartMain(child: const MyApp()),
         supportedLocales: const [
           Locale('en'),
           Locale('es'),
         ],
         path: "assets/translations",
         useFallbackTranslations: true,
-        fallbackLocale: Locale('en')),
+        fallbackLocale: Locale('en'),
+        child: RestartMain(child: const MyApp())),
   );
 }
 
@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
 
 class RestartMain extends StatefulWidget {
   final Widget child;
-  const RestartMain({Key? key, required this.child}) : super(key: key);
+  const RestartMain({super.key, required this.child});
 
   static void restartApp(BuildContext context) {
     _RestartMainState? state =

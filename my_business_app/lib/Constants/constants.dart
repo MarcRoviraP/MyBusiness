@@ -81,24 +81,24 @@ class Utils {
     }
   }
 
-  Future<List<dynamic>> getEmpresa(String id_empresa) async {
+  Future<List<dynamic>> getEmpresa(String idEmpresa) async {
     try {
       final response = await supabaseService.client
           .from('empresas')
           .select('*')
-          .eq('id_empresa', id_empresa);
+          .eq('id_empresa', idEmpresa);
       return response;
     } catch (e) {
       return [];
     }
   }
 
-  Future<List<dynamic>> getUserEmpresa(String id_usuario) async {
+  Future<List<dynamic>> getUserEmpresa(String idUsuario) async {
     try {
       final response = await supabaseService.client
           .from('usuario_empresa')
           .select('*')
-          .eq('id_usuario', id_usuario);
+          .eq('id_usuario', idUsuario);
       return response;
     } catch (e) {
       return [];
@@ -145,6 +145,8 @@ class Utils {
 
 // Widget de mapa para seleccionar la ubicación de la empresa
 class MapaEmpresaWidget extends StatefulWidget {
+  const MapaEmpresaWidget({super.key});
+
   @override
   _MapaEmpresaWidgetState createState() => _MapaEmpresaWidgetState();
 }
@@ -232,8 +234,9 @@ class _MapaEmpresaWidgetState extends State<MapaEmpresaWidget> {
       if (permission == LocationPermission.denied) permissionEnabled = false;
     }
 
-    if (permission == LocationPermission.deniedForever)
+    if (permission == LocationPermission.deniedForever) {
       permissionEnabled = false;
+    }
     if (!permissionEnabled) {
       currentLocations = false;
       return Future.value(

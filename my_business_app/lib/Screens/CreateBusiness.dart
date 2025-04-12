@@ -109,10 +109,10 @@ class _CreatebusinessState extends State<Createbusiness> {
               LocaleKeys.CreateBusiness_business_error.tr(), context);
         } else {
           empresa = Empresa.fromJson(value[0]);
-          String id_empresa = value[0]['id_empresa'].toString();
+          String idEmpresa = value[0]['id_empresa'].toString();
           Utils().insertInTable({
             'id_usuario': int.parse(usuario.id_usuario.toString()),
-            'id_empresa': int.parse(id_empresa),
+            'id_empresa': int.parse(idEmpresa),
             'rol': 'Administrador',
           }, 'usuario_empresa');
 

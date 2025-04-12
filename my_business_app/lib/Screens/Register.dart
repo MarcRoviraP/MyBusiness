@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
 class Register extends StatefulWidget {
+  const Register({super.key});
+
   @override
   _RegisterState createState() => _RegisterState();
 }

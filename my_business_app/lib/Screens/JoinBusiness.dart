@@ -71,8 +71,8 @@ class _JoinbusinessState extends State<Joinbusiness> {
     );
   }
 
-  void checkIfBusinessExists(String id_empresa) {
-    Utils().getEmpresa(id_empresa).then((value) {
+  void checkIfBusinessExists(String idEmpresa) {
+    Utils().getEmpresa(idEmpresa).then((value) {
       if (value.isNotEmpty) {
         // Si existe, redirigir a la pantalla de empresa
         showDialogSendRequest(context, value[0]['nombre'].toString());
@@ -87,7 +87,7 @@ class _JoinbusinessState extends State<Joinbusiness> {
       barrierDismissible: true,
       builder: (context) {
         // Cierra el diálogo después de 3 segundos
-        Future.delayed(const Duration(seconds: 3), () {
+        Future.delayed(const Duration(seconds: 2), () {
           if (Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
           }
