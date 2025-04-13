@@ -67,3 +67,12 @@
         imagen_url TEXT,
         fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
+    CREATE TABLE IF NOT EXISTS Invitacion_Empresa (
+        id_invitacion SERIAL PRIMARY KEY,
+        id_empresa INT REFERENCES Empresas(id_empresa) NOT NULL,
+        id_usuario INT REFERENCES Usuarios(id_usuario) NOT NULL,
+        estado VARCHAR(20) CHECK (estado IN ('Pendiente', 'Aceptada', 'Rechazada')) NOT NULL,
+        fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    );
