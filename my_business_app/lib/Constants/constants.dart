@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:MyBusiness/Class/Empresa.dart';
@@ -18,6 +19,9 @@ String shared_mail = "mail";
 String shared_userid = "user_id";
 String shared_empresa_id = "empresa_id";
 String shared_theme = "tema";
+String Pendiente = "Pendiente";
+String Aceptada = "Aceptada";
+String Rechazada = "Rechazada";
 bool currentLocations = false;
 String direccion = "";
 Empresa empresa =
@@ -69,6 +73,40 @@ class Utils {
       return [];
     }
   }
+
+  Future<List<dynamic>> updateInvitacionState(
+      int user_id, String estado) async {
+    try {
+      final response = await supabaseService.client
+          .from('invitacion_empresa')
+          .update({
+            "estado": estado,
+          })
+          .filter('id_empresa', 'eq', empresa.id_empresa)
+          .filter('id_usuario', 'eq', user_id)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> updateRepeatedInvitacion(Empresa e) async {
+    try {
+      final response = await supabaseService.client
+          .from('invitacion_empresa')
+          .update({
+            "fecha_solicitud": DateTime.now().toIso8601String(),
+          })
+          .filter('id_empresa', 'eq', e.id_empresa)
+          .filter('id_usuario', 'eq', usuario.id_usuario)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<dynamic>> getUserMail(String mail) async {
     try {
       final response = await supabaseService.client
@@ -122,16 +160,6 @@ class Utils {
     }
   }
 
-  Future<List<dynamic>> insertInTable2(
-      Map<String, dynamic> params, String tabla) async {
-    try {
-      var response = await supabaseService.client.from(tabla).insert(params);
-      return response;
-    } catch (e) {
-      return [];
-    }
-  }
-
   Future<void> setSharedString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(key, value);
@@ -140,6 +168,19 @@ class Utils {
   Future<String> getSharedString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? "";
+  }
+
+  Future<List<dynamic>> getInvites() async {
+    try {
+      var response = await supabaseService.client
+          .from('invitacion_empresa')
+          .select('*, usuario:usuarios(*)')
+          .eq('id_empresa', empresa.id_empresa)
+          .eq('estado', Pendiente);
+      return response;
+    } catch (e) {
+      return [];
+    }
   }
 }
 

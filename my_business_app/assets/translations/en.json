@@ -3,6 +3,8 @@
   "CreateBusiness_business_error": "An error has occurred, try with another name.",
   "CreateBusiness_business_name": "Business name",
   "CreateBusiness_phone": "Phone",
+  "InvitesScreen_no_invites": "No business request.",
+  "InvitesScreen_title_invite": "wants to join your business",
   "JoinBusiness_enter_business_id": "Enter business ID",
   "JoinBusiness_join_request": "Send join request",
   "JoinBusiness_request_send_message": "You send the request to:",

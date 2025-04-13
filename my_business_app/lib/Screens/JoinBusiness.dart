@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:MyBusiness/widget/ScannerQR.dart';
@@ -75,13 +78,26 @@ class _JoinbusinessState extends State<Joinbusiness> {
     Utils().getEmpresa(idEmpresa).then((value) {
       if (value.isNotEmpty) {
         // Si existe, redirigir a la pantalla de empresa
-        showDialogSendRequest(context, value[0]['nombre'].toString());
+        Empresa e = Empresa.fromJson(value[0]);
+        showDialogSendRequest(context, e);
       }
     });
   }
 
-  Future<dynamic> showDialogSendRequest(
-      BuildContext context, String nombreEmpresa) {
+  Future<dynamic> showDialogSendRequest(BuildContext context, Empresa empresa) {
+    Utils().updateRepeatedInvitacion(empresa).then(
+      (value) {
+        if (value.isEmpty) {
+          Utils().insertInTable({
+            "id_empresa": empresa.id_empresa,
+            "id_usuario": usuario.id_usuario,
+            "estado": Pendiente,
+            "fecha_solicitud": DateTime.now().toIso8601String(),
+          }, "invitacion_empresa");
+        }
+      },
+    );
+
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -95,7 +111,7 @@ class _JoinbusinessState extends State<Joinbusiness> {
         return AlertDialog(
           title: Text(LocaleKeys.JoinBusiness_request_send_title.tr()),
           content: Text(
-              "${LocaleKeys.JoinBusiness_request_send_message.tr()} $nombreEmpresa"),
+              "${LocaleKeys.JoinBusiness_request_send_message.tr()} ${empresa.nombre}"),
         );
       },
     );

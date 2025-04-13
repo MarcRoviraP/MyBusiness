@@ -3,6 +3,8 @@
   "CreateBusiness_business_error": "Se ha producido un error, prueba con otro nombre.",
   "CreateBusiness_business_name": "Nombre negocio",
   "CreateBusiness_phone": "Teléfono",
+  "InvitesScreen_no_invites": "No hay invitaciones",
+  "InvitesScreen_title_invite": "quiere unirse a tu negocio",
   "JoinBusiness_enter_business_id": "Ingresa el ID de la empresa",
   "JoinBusiness_join_request": "Enviar solicitud de union",
   "JoinBusiness_request_send_message": "Has enviado la peticion de union a:",
