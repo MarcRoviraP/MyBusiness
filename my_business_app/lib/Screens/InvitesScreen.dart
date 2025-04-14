@@ -66,14 +66,20 @@ class _InvitesscreenState extends State<Invitesscreen> {
                         IconButton(
                           icon: const Icon(Icons.check),
                           onPressed: () {
-                            Utils().updateInvitacionState(item["id_usuario"], Aceptada);
+                            Utils().updateInvitacionState(
+                                item["id_usuario"], Aceptada);
+                            Utils().insertInTable({
+                              "id_usuario": item["id_usuario"],
+                              "id_empresa": empresa.id_empresa,
+                              "rol": Usuario_empresa,
+                            }, "usuario_empresa");
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.close),
                           onPressed: () {
-                            
-                            Utils().updateInvitacionState(item["id_usuario"], Rechazada);
+                            Utils().updateInvitacionState(
+                                item["id_usuario"], Rechazada);
                           },
                         ),
                       ],

@@ -113,7 +113,7 @@ class _CreatebusinessState extends State<Createbusiness> {
           Utils().insertInTable({
             'id_usuario': int.parse(usuario.id_usuario.toString()),
             'id_empresa': int.parse(idEmpresa),
-            'rol': 'Administrador',
+            'rol': Administrador_empresa,
           }, 'usuario_empresa');
 
           customSuccessSnackbar(
