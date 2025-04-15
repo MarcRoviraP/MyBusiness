@@ -182,40 +182,37 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void iniciarSesion() {
+  void iniciarSesion() async {
     String mail = _emailController.text;
     String password = _passwordController.text;
 
     if (_emailKey.currentState?.validate() == true &&
         _passwordKey.currentState?.validate() == true) {
       // Recuperar usuario
-      Utils().getUserLogin(mail, password).then((value) {
-        if (value.isNotEmpty) {
-          usuario = Usuario.fromJson(value[0]);
+      var user = await Utils().getUserLogin(mail, password);
+      if (user.isEmpty) {
+        customErrorSnackbar(LocaleKeys.Login_error.tr(), context);
+        return;
+      }
+      // Si el usuario existe, guardar en la variable usuario
+      usuario = Usuario.fromJson(user[0]);
+      await Utils().setSharedString(shared_mail, mail);
 
-          Utils().setSharedString(shared_mail, mail);
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MainScreen(),
-            ),
-            (Route<dynamic> route) => false,
-          );
-
-          Utils().getUserEmpresa(usuario.id_usuario.toString()).then((value) {
-            if (value.isNotEmpty) {
-              Utils()
-                  .getEmpresa(value[0]['id_empresa'].toString())
-                  .then((value) {
-                empresa = Empresa.fromJson(value[0]);
-              });
-            }
-          });
-        } else {
-          // Si el usuario no existe, mostrar un mensaje de error
-          customErrorSnackbar(LocaleKeys.Login_error.tr(), context);
-        }
-      });
+      // Recuperar empresa
+      var userEmpresa =
+          await Utils().getUserEmpresa(usuario.id_usuario.toString());
+      if (userEmpresa.isNotEmpty) {
+        var empresaList =
+            await Utils().getEmpresa(userEmpresa[0]['id_empresa'].toString());
+        empresa = Empresa.fromJson(empresaList[0]);
+      }
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(),
+        ),
+        (Route<dynamic> route) => false,
+      );
     }
   }
 

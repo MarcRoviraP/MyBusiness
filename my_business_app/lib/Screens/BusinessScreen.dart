@@ -1,3 +1,5 @@
+import 'package:MyBusiness/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/InvitesScreen.dart';
 import 'package:flutter/material.dart';
@@ -34,12 +36,12 @@ class _BusinessscreenState extends State<Businessscreen> {
         destinations: <Widget>[
           NavigationDestination(
             icon: Icon(Icons.home),
-            label: 'home',
+            label: LocaleKeys.BusinessScreen_start.tr(),
           ),
           NavigationDestination(
             icon: Icon(Icons.mail_outline),
             selectedIcon: Icon(Icons.mail),
-            label: 'business',
+            label: LocaleKeys.BusinessScreen_invitacions.tr(),
           ),
         ],
       ),

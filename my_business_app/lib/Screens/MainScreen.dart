@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:MyBusiness/Class/Usuario.dart';
+import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Dialog/SettingsDialog.dart';
@@ -9,26 +13,61 @@ import 'package:MyBusiness/Screens/BusinessSelectorScreen.dart';
 import 'package:MyBusiness/Screens/VideoWidget.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  MainScreen({super.key});
 
+  var em = empresa;
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Widget> screens = <Widget>[
-    Inicio(),
-    Inicio(),
-    Inicio(),
-  ];
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    List<Widget> screens = empresa.id_empresa != 0
+        ? <Widget>[
+            Inicio(),
+            Inicio(),
+            Inicio(),
+          ]
+        : <Widget>[
+            Inicio(),
+            Inicio(),
+          ];
+
+    var destinations = empresa.id_empresa != 0
+        ? <Widget>[
+            NavigationDestination(
+              icon: Icon(Icons.home),
+              label: 'start'.tr(),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.business_outlined),
+              selectedIcon: Icon(Icons.business_outlined),
+              label: 'business'.tr(),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.emoji_objects_outlined),
+              selectedIcon: Icon(Icons.emoji_objects_rounded),
+              label: LocaleKeys.MainScreen_products.tr(),
+            ),
+          ]
+        : <Widget>[
+            NavigationDestination(
+              icon: Icon(Icons.home),
+              label: 'start'.tr(),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.business_outlined),
+              selectedIcon: Icon(Icons.business_outlined),
+              label: 'business'.tr(),
+            ),
+          ];
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (value) {
           setState(() {
-            if (value == 2) {
+            if (value == 1) {
               startBusinessScreen(context);
             } else {
               selectedIndex = value;
@@ -36,21 +75,7 @@ class _MainScreenState extends State<MainScreen> {
           });
         },
         selectedIndex: selectedIndex,
-        destinations: <Widget>[
-          NavigationDestination(
-            icon: Icon(Icons.home),
-            label: 'start'.tr(),
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.business),
-            label: '',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.business_outlined),
-            selectedIcon: Icon(Icons.business_outlined),
-            label: 'business'.tr(),
-          ),
-        ],
+        destinations: destinations,
       ),
       appBar: AppBar(
         actions: [
@@ -89,16 +114,28 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  void cerrarSesion() {
-    Utils().setSharedString(shared_mail, "").then((value) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Login(),
-        ),
-        (Route<dynamic> route) => false,
-      );
-    });
+  void cerrarSesion() async {
+    await Utils().setSharedString(shared_mail, "");
+    await Utils().setSharedString(shared_empresa_id, "");
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Login(),
+      ),
+      (Route<dynamic> route) => false,
+    );
+    empresa = Empresa(
+      id_empresa: 0,
+      nombre: "",
+      direccion: "",
+      telefono: "",
+    );
+    usuario = Usuario(
+      id_usuario: 0,
+      nombre: "",
+      correo: "",
+      contrasenya: "",
+    );
   }
 
   void openSettings() {

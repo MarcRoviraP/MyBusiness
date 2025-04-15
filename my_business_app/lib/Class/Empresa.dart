@@ -11,6 +11,8 @@ class Empresa {
     required this.telefono,
   });
 
+  
+
   factory Empresa.fromJson(Map<String, dynamic> json) {
     return Empresa(
       id_empresa: json['id_empresa'] ?? '',

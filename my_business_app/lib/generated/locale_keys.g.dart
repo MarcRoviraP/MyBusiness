@@ -3,6 +3,8 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
+  static const BusinessScreen_invitacions = 'BusinessScreen_invitacions';
+  static const BusinessScreen_start = 'BusinessScreen_start';
   static const CreateBusiness_business_created = 'CreateBusiness_business_created';
   static const CreateBusiness_business_error = 'CreateBusiness_business_error';
   static const CreateBusiness_business_name = 'CreateBusiness_business_name';
@@ -20,6 +22,7 @@ abstract class  LocaleKeys {
   static const Login_password = 'Login_password';
   static const Login_register = 'Login_register';
   static const Login_showpass = 'Login_showpass';
+  static const MainScreen_products = 'MainScreen_products';
   static const Register_confirm_pass = 'Register_confirm_pass';
   static const Register_invalid_mail = 'Register_invalid_mail';
   static const Register_login = 'Register_login';

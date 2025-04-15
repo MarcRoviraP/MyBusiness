@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
     return FutureBuilder(
       future: Future.wait(
         [
-          Utils().getSharedString(shared_mail),
+          preInitMainScreen(),
           Utils().getSharedString(shared_theme),
         ],
       ),
@@ -63,20 +63,6 @@ class MyApp extends StatelessWidget {
           String theme = response[1].toString();
 
           if (mail != "") {
-            Utils().getUserMail(mail).then((value) {
-              usuario = Usuario.fromJson(value[0]);
-              Utils()
-                  .getUserEmpresa(usuario.id_usuario.toString())
-                  .then((value) {
-                if (value.isNotEmpty) {
-                  Utils()
-                      .getEmpresa(value[0]['id_empresa'].toString())
-                      .then((value) {
-                    empresa = Empresa.fromJson(value[0]);
-                  });
-                }
-              });
-            });
             homeScreen = MainScreen();
           }
 
@@ -119,6 +105,21 @@ class MyApp extends StatelessWidget {
             home: homeScreen);
       },
     );
+  }
+
+  Future<String> preInitMainScreen() async {
+    var mail = await Utils().getSharedString(shared_mail);
+    var userMailList = await Utils().getUserMail(mail);
+    usuario = Usuario.fromJson(userMailList[0]);
+    var userEmpresaList =
+        await Utils().getUserEmpresa(usuario.id_usuario.toString());
+    if (userEmpresaList.isNotEmpty) {
+      var empresaList =
+          await Utils().getEmpresa(userEmpresaList[0]['id_empresa'].toString());
+      empresa = Empresa.fromJson(empresaList[0]);
+    }
+
+    return mail;
   }
 }
 

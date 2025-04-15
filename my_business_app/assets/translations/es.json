@@ -1,4 +1,6 @@
 {
+  "BusinessScreen_invitacions": "Invitaciones",
+  "BusinessScreen_start": "Inicio",
   "CreateBusiness_business_created": "El negocio ha sido creado.",
   "CreateBusiness_business_error": "Se ha producido un error, prueba con otro nombre.",
   "CreateBusiness_business_name": "Nombre negocio",
@@ -16,6 +18,7 @@
   "Login_password": "Contraseña",
   "Login_register": "¿No tienes cuenta? Registrate",
   "Login_showpass": "Mostrar contraseña",
+  "MainScreen_products": "Productos",
   "Register_confirm_pass": "Confirmar contraseña",
   "Register_invalid_mail": "Email no válido",
   "Register_login": "Iniciar Sesión",
