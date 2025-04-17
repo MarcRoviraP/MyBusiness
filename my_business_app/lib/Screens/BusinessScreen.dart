@@ -1,3 +1,4 @@
+import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:MyBusiness/Constants/constants.dart';
@@ -24,7 +25,19 @@ class _BusinessscreenState extends State<Businessscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainScreen(),
+                ),
+                (Route<dynamic> route) => false);
+          },
+        ),
+      ),
       body: screens[selectedIndex],
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (value) {

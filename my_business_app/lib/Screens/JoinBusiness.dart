@@ -74,14 +74,13 @@ class _JoinbusinessState extends State<Joinbusiness> {
     );
   }
 
-  void checkIfBusinessExists(String idEmpresa) {
-    Utils().getEmpresa(idEmpresa).then((value) {
-      if (value.isNotEmpty) {
-        // Si existe, redirigir a la pantalla de empresa
-        Empresa e = Empresa.fromJson(value[0]);
-        showDialogSendRequest(context, e);
-      }
-    });
+  void checkIfBusinessExists(String idEmpresa) async {
+    var value = await Utils().getEmpresa(idEmpresa);
+    if (value.isNotEmpty) {
+      // Si existe, redirigir a la pantalla de empresa
+      Empresa e = Empresa.fromJson(value[0]);
+      showDialogSendRequest(context, e);
+    }
   }
 
   Future<dynamic> showDialogSendRequest(BuildContext context, Empresa empresa) {

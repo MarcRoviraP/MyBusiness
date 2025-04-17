@@ -1,3 +1,4 @@
+import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:MyBusiness/Screens/CreateBusiness.dart';
@@ -39,10 +40,19 @@ class _BusinessselectorscreenState extends State<Businessselectorscreen> {
         ],
       ),
       appBar: AppBar(
-        title: Text(''),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainScreen(),
+                ),
+                (Route<dynamic> route) => false);
+          },
+        ),
       ),
       body: screens[selectedIndex],
     );
   }
 }
-

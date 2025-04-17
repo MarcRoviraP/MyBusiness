@@ -99,16 +99,24 @@ class _MainScreenState extends State<MainScreen> {
           empresa = Empresa.fromJson(value[0]);
 
           // Si existe, redirigir a la pantalla de empresa
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Businessscreen()),
+            (Route<dynamic> route) => false,
           );
         });
       } else {
         // Si no existe, redirigir a la pantalla de creación de empresa
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Businessselectorscreen()),
+          (Route<dynamic> route) => false,
+        );
+        empresa = Empresa(
+          id_empresa: 0,
+          nombre: "",
+          direccion: "",
+          telefono: "",
         );
       }
     });

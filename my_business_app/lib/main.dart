@@ -109,15 +109,18 @@ class MyApp extends StatelessWidget {
 
   Future<String> preInitMainScreen() async {
     var mail = await Utils().getSharedString(shared_mail);
-    var userMailList = await Utils().getUserMail(mail);
-    usuario = Usuario.fromJson(userMailList[0]);
-    var userEmpresaList =
-        await Utils().getUserEmpresa(usuario.id_usuario.toString());
-    if (userEmpresaList.isNotEmpty) {
-      var empresaList =
-          await Utils().getEmpresa(userEmpresaList[0]['id_empresa'].toString());
-      empresa = Empresa.fromJson(empresaList[0]);
-    }
+    try {
+      var userMailList = await Utils().getUserMail(mail);
+
+      usuario = Usuario.fromJson(userMailList[0]);
+      var userEmpresaList =
+          await Utils().getUserEmpresa(usuario.id_usuario.toString());
+      if (userEmpresaList.isNotEmpty) {
+        var empresaList = await Utils()
+            .getEmpresa(userEmpresaList[0]['id_empresa'].toString());
+        empresa = Empresa.fromJson(empresaList[0]);
+      }
+    } catch (e) {}
 
     return mail;
   }
