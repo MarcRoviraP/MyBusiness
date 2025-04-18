@@ -6,6 +6,7 @@ import 'package:MyBusiness/Theme/Theme949CAE.dart';
 import 'package:MyBusiness/Theme/ThemeB11AC1.dart';
 import 'package:MyBusiness/Theme/ThemeFF6D66.dart';
 import 'package:MyBusiness/Theme/ThemeFFDE3F.dart';
+import 'package:MyBusiness/Theme/util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
@@ -42,7 +43,6 @@ class MyApp extends StatelessWidget {
     ColorScheme temaLight = ThemeFFDE3F.lightScheme();
     ColorScheme temaDark = ThemeFFDE3F.darkScheme();
     Widget homeScreen = Login();
-
     return FutureBuilder(
       future: Future.wait(
         [
@@ -95,10 +95,17 @@ class MyApp extends StatelessWidget {
               break;
           }
         }
+
+        final lightTextTheme =
+            createTextTheme(context, "Afacad", "Afacad", false);
+        final darkTextTheme =
+            createTextTheme(context, "Afacad", "Afacad", true);
         return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.from(colorScheme: temaLight),
-            darkTheme: ThemeData.from(colorScheme: temaDark),
+            theme: ThemeData.from(
+                colorScheme: temaLight, textTheme: lightTextTheme),
+            darkTheme:
+                ThemeData.from(colorScheme: temaDark, textTheme: darkTextTheme),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
