@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:MyBusiness/Class/Usuario.dart';
+import 'package:MyBusiness/Screens/ProductsScreen.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Constants/constants.dart';
@@ -28,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
         ? <Widget>[
             Inicio(),
             Inicio(),
-            Inicio(),
+            ProductsScreen(),
           ]
         : <Widget>[
             Inicio(),

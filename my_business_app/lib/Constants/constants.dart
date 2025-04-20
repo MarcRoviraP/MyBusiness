@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
+import 'package:MyBusiness/Theme/ThemeFFDE3F.dart';
 import 'package:crypto/crypto.dart';
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
 import 'package:geolocator/geolocator.dart';
@@ -35,6 +36,9 @@ Usuario usuario = Usuario(
   contrasenya: "",
 );
 
+
+    ColorScheme temaLight = ThemeFFDE3F.lightScheme();
+    ColorScheme temaDark = ThemeFFDE3F.darkScheme();
 void customErrorSnackbar(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

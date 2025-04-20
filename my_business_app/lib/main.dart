@@ -13,6 +13,8 @@ import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/Login.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
+import 'package:flutter_launcher_icons/logger.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,8 +42,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme temaLight = ThemeFFDE3F.lightScheme();
-    ColorScheme temaDark = ThemeFFDE3F.darkScheme();
     Widget homeScreen = Login();
     return FutureBuilder(
       future: Future.wait(
@@ -52,7 +52,11 @@ class MyApp extends StatelessWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          );
         } else if (snapshot.hasError) {
           return const Center(child: Text('Error'));
         } else {

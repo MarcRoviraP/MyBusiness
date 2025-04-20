@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:ffi' hide Size;
 import 'dart:math';
+import 'package:flutter/material.dart';
 
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
@@ -144,6 +146,7 @@ class _LoginState extends State<Login> {
                         iniciarSesion();
                       },
                       style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50),
                         padding:
                             EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                         shape: RoundedRectangleBorder(
@@ -161,6 +164,7 @@ class _LoginState extends State<Login> {
                         registro();
                       },
                       style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50),
                         padding:
                             EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                         shape: RoundedRectangleBorder(
