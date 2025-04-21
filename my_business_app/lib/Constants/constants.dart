@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
@@ -36,9 +37,18 @@ Usuario usuario = Usuario(
   contrasenya: "",
 );
 
+String bucketProducts = "products";
+ColorScheme temaLight = ThemeFFDE3F.lightScheme();
+ColorScheme temaDark = ThemeFFDE3F.darkScheme();
 
-    ColorScheme temaLight = ThemeFFDE3F.lightScheme();
-    ColorScheme temaDark = ThemeFFDE3F.darkScheme();
+Future<dynamic> uploadImage(File imageFile, String name) async {
+  final response = await supabaseService.client.storage
+      .from(bucketProducts)
+      .upload(name, imageFile);
+
+  return response;
+}
+
 void customErrorSnackbar(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -79,7 +89,42 @@ class Utils {
       return [];
     }
   }
-
+  Future<dynamic> getCategory(String name) async {
+    try {
+      final response = await supabaseService.client
+          .from('categorias')
+          .select('*')
+          .eq('nombre', name)
+          .eq('id_empresa', empresa.id_empresa);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+  Future<List<dynamic>> getCategories() async {
+    try {
+      final response = await supabaseService.client
+          .from('categorias')
+          .select('*')
+          .eq('id_empresa', empresa.id_empresa);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+  
+  Future<List<dynamic>> getProductsFromCategory(String category) async {
+    try {
+      final response = await supabaseService.client
+          .from('productos')
+          .select('*')
+          .eq('id_empresa', empresa.id_empresa)
+          .eq('id_categoria', category);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
   Future<List<dynamic>> updateInvitacionState(
       int user_id, String estado) async {
     try {
