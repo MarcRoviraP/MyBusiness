@@ -18,6 +18,7 @@ abstract class  LocaleKeys {
   static const CreateProducts_invalid_price = 'CreateProducts_invalid_price';
   static const CreateProducts_price = 'CreateProducts_price';
   static const CreateProducts_succes = 'CreateProducts_succes';
+  static const CreateProducts_too_long = 'CreateProducts_too_long';
   static const InvitesScreen_no_invites = 'InvitesScreen_no_invites';
   static const InvitesScreen_title_invite = 'InvitesScreen_title_invite';
   static const JoinBusiness_enter_business_id = 'JoinBusiness_enter_business_id';
@@ -33,6 +34,7 @@ abstract class  LocaleKeys {
   static const Login_showpass = 'Login_showpass';
   static const MainScreen_products = 'MainScreen_products';
   static const ProductsScreen_add_gallery = 'ProductsScreen_add_gallery';
+  static const ProductsScreen_moneda = 'ProductsScreen_moneda';
   static const ProductsScreen_product_name = 'ProductsScreen_product_name';
   static const Register_confirm_pass = 'Register_confirm_pass';
   static const Register_invalid_mail = 'Register_invalid_mail';

@@ -27,6 +27,7 @@ class _CreateproductsState extends State<Createproducts> {
   GlobalKey<FormFieldState> priceKey = GlobalKey<FormFieldState>();
   GlobalKey<FormFieldState> categoryKey = GlobalKey<FormFieldState>();
 
+  int letras = 0;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -77,10 +78,28 @@ class _CreateproductsState extends State<Createproducts> {
           SizedBox(
             height: 10,
           ),
-          TextField(
-            controller: descriptionController,
-            decoration: InputDecoration(
-                labelText: LocaleKeys.CreateProducts_description.tr()),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(
+                    labelText: LocaleKeys.CreateProducts_description.tr(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      letras = value.length;
+                      if (letras > 50) {
+                        descriptionController.text = value.substring(0, 50);
+                        letras = 50;
+                      }
+                    });
+                  },
+                ),
+              ),
+              SizedBox(width: 10),
+              Text("$letras/50"),
+            ],
           ),
           SizedBox(
             height: 10,
@@ -91,6 +110,7 @@ class _CreateproductsState extends State<Createproducts> {
               Validators.required(LocaleKeys.Register_required_field.tr()),
               Validators.patternString(r'^[0-9]+(\.[0-9]{1,2})?$',
                   LocaleKeys.CreateProducts_invalid_price.tr()),
+                  Validators.maxLength(13, LocaleKeys.CreateProducts_too_long.tr()),
             ]),
             controller: priceController,
             keyboardType: TextInputType.number,
@@ -209,7 +229,7 @@ class _CreateproductsState extends State<Createproducts> {
       if (picture != null) {
         name = DateTime.now().millisecondsSinceEpoch.toString() +
             productNameController.text +
-            ".jpg";
+            ".png";
         await uploadImage(File(picture!.path), name);
       }
       int id_categoria = 0;

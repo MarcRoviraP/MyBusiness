@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Productos (
     id_producto SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     descripcion TEXT,
-    precio DECIMAL(10,2) NOT NULL,
+    precio DECIMAL(20,2) NOT NULL,
     url_img VARCHAR(255),
     id_empresa INT REFERENCES Empresas(id_empresa),
     id_categoria INT REFERENCES Categorias(id_categoria)
