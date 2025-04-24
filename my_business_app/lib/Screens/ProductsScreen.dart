@@ -177,6 +177,7 @@ class _cardProductsState extends State<cardProducts> {
                       style: TextStyle(
                           fontWeight: FontWeight.w500, color: Colors.green),
                     ),
+                    SizedBox(height: 4),
                   ],
                 ),
               ),

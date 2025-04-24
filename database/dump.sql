@@ -37,12 +37,15 @@ CREATE TABLE IF NOT EXISTS Productos (
 
 CREATE TABLE IF NOT EXISTS Inventario (
     id_inventario SERIAL PRIMARY KEY,
-    id_producto INT REFERENCES Productos(id_producto),
-    cantidad INT NOT NULL,
-    ubicacion VARCHAR(255),
     fecha_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    id_empresa INT REFERENCES Empresas(id_empresa),
+    id_empresa INT REFERENCES Empresas(id_empresa) UNIQUE,
     id_usuario INT REFERENCES Usuarios(id_usuario)
+);
+CREATE TABLE IF NOT EXISTS Inventario_Producto (
+    id_inventario_producto SERIAL PRIMARY KEY,
+    id_inventario INT REFERENCES Inventario(id_inventario),
+    id_producto INT REFERENCES Productos(id_producto),
+    cantidad INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS Historial_Inventario (

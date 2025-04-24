@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -69,8 +70,11 @@ class _CreateproductsState extends State<Createproducts> {
           ),
           TextFormField(
             key: nameKey,
-            validator:
-                Validators.required(LocaleKeys.Register_required_field.tr()),
+            validator: Validators.compose([
+              Validators.required(LocaleKeys.Register_required_field.tr()),
+              Validators.maxLength(
+                  20, LocaleKeys.CreateProducts_name_too_long.tr()),
+            ]), // Validar el nombre del producto
             controller: productNameController,
             decoration: InputDecoration(
                 labelText: LocaleKeys.ProductsScreen_product_name.tr()),
@@ -110,7 +114,7 @@ class _CreateproductsState extends State<Createproducts> {
               Validators.required(LocaleKeys.Register_required_field.tr()),
               Validators.patternString(r'^[0-9]+(\.[0-9]{1,2})?$',
                   LocaleKeys.CreateProducts_invalid_price.tr()),
-                  Validators.maxLength(13, LocaleKeys.CreateProducts_too_long.tr()),
+              Validators.maxLength(13, LocaleKeys.CreateProducts_too_long.tr()),
             ]),
             controller: priceController,
             keyboardType: TextInputType.number,
@@ -227,24 +231,27 @@ class _CreateproductsState extends State<Createproducts> {
       String precio = priceController.text;
       String name = "";
       if (picture != null) {
-        name = DateTime.now().millisecondsSinceEpoch.toString() +
-            productNameController.text +
-            ".png";
+        // Guarda la imagen en el servidor
+        name =
+            "${DateTime.now().millisecondsSinceEpoch}${productNameController.text}.png";
         await uploadImage(File(picture!.path), name);
       }
+      // Verifica si la categoria existe
       int id_categoria = 0;
-      var response = await Utils().getCategory(categoria);
-      if (response.isEmpty) {
-        var responses = await Utils().insertInTable(
+      var categoria1 = await Utils().getCategory(categoria);
+      if (categoria1.isEmpty) {
+        // Crea la categoria
+        var categoria2 = await Utils().insertInTable(
             {'nombre': categoria, 'id_empresa': empresa.id_empresa},
             "categorias");
 
-        id_categoria = responses[0]['id_categoria'];
+        id_categoria = categoria2[0]['id_categoria'];
       } else {
-        id_categoria = response[0]['id_categoria'];
+        id_categoria = categoria1[0]['id_categoria'];
       }
 
-      var response2 = await Utils().insertInTable({
+      // Inserta el producto en la tabla productos
+      var productos = await Utils().insertInTable({
         'nombre': nombre,
         'descripcion': descripcion,
         'precio': precio,
@@ -252,12 +259,32 @@ class _CreateproductsState extends State<Createproducts> {
         'id_empresa': empresa.id_empresa,
         'id_categoria': id_categoria,
       }, "productos");
-      if (response2.isEmpty) {
+
+      Producto producto = Producto.fromJson(productos[0]);
+      // Crea el inventario
+      var inventario = await Utils().getInventario();
+      if (inventario.isEmpty) {
+        inventario = await Utils().insertInTable({
+          'fecha_update': DateTime.now().toString(),
+          'id_empresa': empresa.id_empresa,
+          'id_usuario': usuario.id_usuario,
+        }, "inventario");
+      }
+
+      // Crea el inventario_producto
+      var inventario_producto = await Utils().insertInTable({
+        'id_inventario': inventario[0]['id_inventario'],
+        'id_producto': producto.id_producto,
+        'cantidad': 0,
+      }, "inventario_producto");
+
+      if (inventario_producto.isEmpty) {
         customErrorSnackbar(LocaleKeys.CreateProducts_error.tr(), context);
       } else {
-        Navigator.of(context).pop();
         customSuccessSnackbar(LocaleKeys.CreateProducts_succes.tr(), context);
       }
+
+      Navigator.of(context).pop();
     }
   }
 }

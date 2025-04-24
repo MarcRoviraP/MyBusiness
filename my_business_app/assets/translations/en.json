@@ -12,6 +12,7 @@
   "CreateProducts_description": "Description",
   "CreateProducts_error": "Error creating the product",
   "CreateProducts_invalid_price": "Invalid price (10.00)",
+  "CreateProducts_name_too_long": "Max 20 characters",
   "CreateProducts_price": "Price",
   "CreateProducts_succes": "The product has been created succesfully",
   "CreateProducts_too_long": "Max 13 digits",

@@ -77,6 +77,18 @@ class Utils {
     return response as List<dynamic>;
   }
 
+  Future<List<dynamic>> getInventario() async {
+    try {
+      final response = await supabaseService.client
+          .from('inventario')
+          .select('*')
+          .eq('id_empresa', empresa.id_empresa);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<dynamic>> getUserLogin(String mail, String password) async {
     try {
       final response = await supabaseService.client
@@ -89,6 +101,7 @@ class Utils {
       return [];
     }
   }
+
   Future<dynamic> getCategory(String name) async {
     try {
       final response = await supabaseService.client
@@ -101,6 +114,7 @@ class Utils {
       return [];
     }
   }
+
   Future<List<dynamic>> getCategories() async {
     try {
       final response = await supabaseService.client
@@ -112,7 +126,7 @@ class Utils {
       return [];
     }
   }
-  
+
   Future<List<dynamic>> getProductsFromCategory(String category) async {
     try {
       final response = await supabaseService.client
@@ -125,6 +139,7 @@ class Utils {
       return [];
     }
   }
+
   Future<List<dynamic>> updateInvitacionState(
       int user_id, String estado) async {
     try {

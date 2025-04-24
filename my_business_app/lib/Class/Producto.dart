@@ -6,6 +6,7 @@ class Producto {
   String url_img;
   int id_empresa;
   int id_categoria;
+  int cantidad = 0;
 
   Producto({
     required this.id_producto,

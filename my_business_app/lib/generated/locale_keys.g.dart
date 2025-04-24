@@ -16,6 +16,7 @@ abstract class  LocaleKeys {
   static const CreateProducts_description = 'CreateProducts_description';
   static const CreateProducts_error = 'CreateProducts_error';
   static const CreateProducts_invalid_price = 'CreateProducts_invalid_price';
+  static const CreateProducts_name_too_long = 'CreateProducts_name_too_long';
   static const CreateProducts_price = 'CreateProducts_price';
   static const CreateProducts_succes = 'CreateProducts_succes';
   static const CreateProducts_too_long = 'CreateProducts_too_long';
