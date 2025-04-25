@@ -37,6 +37,7 @@ abstract class  LocaleKeys {
   static const ProductsScreen_add_gallery = 'ProductsScreen_add_gallery';
   static const ProductsScreen_moneda = 'ProductsScreen_moneda';
   static const ProductsScreen_product_name = 'ProductsScreen_product_name';
+  static const ProductsScreen_save_product = 'ProductsScreen_save_product';
   static const Register_confirm_pass = 'Register_confirm_pass';
   static const Register_invalid_mail = 'Register_invalid_mail';
   static const Register_login = 'Register_login';

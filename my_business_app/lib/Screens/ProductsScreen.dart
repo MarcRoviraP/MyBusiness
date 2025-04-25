@@ -27,7 +27,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error'));
+          return Center(child: Text('Sin productos disponibles'));
         } else {
           return Scaffold(
             body: Column(
@@ -66,31 +66,60 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       final producto = widget.listaProductos[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: cardProducts(producto: producto),
+                        child: cardProducts(
+                          producto: producto,
+                          onCantidadChanged: (nuevaCantidad) {
+                            producto.cantidad = nuevaCantidad;
+                            widget.listaProductos[index] = producto;
+                          },
+                        ),
                       );
                     },
                   ),
                 )
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Createproducts(
-                      listaCategorias:
-                          widget.listaCategorias.map((e) => e.nombre).toList(),
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    saveProducts();
+                  },
+                  child: Icon(Icons.save_sharp),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Createproducts(
+                          listaCategorias: widget.listaCategorias
+                              .map((e) => e.nombre)
+                              .toList(),
+                        );
+                      },
                     );
                   },
-                );
-              },
-              child: Icon(Icons.add),
+                  child: Icon(Icons.add),
+                ),
+              ],
             ),
           );
         }
       },
     );
+  }
+
+  void saveProducts() async {
+    for (Producto producto in widget.listaProductos) {
+      Utils().saveProduct(producto);
+    }
+
+    customSuccessSnackbar(LocaleKeys.ProductsScreen_save_product, context);
   }
 
   Future<void> loadInfo() async {
@@ -102,13 +131,19 @@ class _ProductsScreenState extends State<ProductsScreen> {
       currentCategory = widget.listaCategorias[0].id_categoria.toString();
     }
     var value2 = await Utils().getProductsFromCategory(currentCategory);
-    widget.listaProductos = value2.map((e) => Producto.fromJson(e)).toList();
+    widget.listaProductos = value2.map((e) {
+      Producto producto = Producto.fromJson(e);
+      producto.cantidad = e["inventario_producto"][0]["cantidad"];
+      return producto;
+    }).toList();
   }
 }
 
 class cardProducts extends StatefulWidget {
   final Producto producto;
-  cardProducts({super.key, required this.producto});
+  final void Function(int nuevaCantidad) onCantidadChanged;
+  cardProducts(
+      {super.key, required this.producto, required this.onCantidadChanged});
   double tamanyo = 50;
   double cardSize = 150;
 
@@ -178,7 +213,11 @@ class _cardProductsState extends State<cardProducts> {
                     ),
                     SizedBox(height: 4),
                     NumberSpinner(
-                        widget: widget, cantidad: widget.producto.cantidad),
+                        widget: widget,
+                        cantidad: widget.producto.cantidad,
+                        onCantidadChanged: (nuevaCantidad) {
+                          widget.onCantidadChanged(nuevaCantidad);
+                        }),
                   ],
                 ),
               ),
@@ -191,10 +230,13 @@ class _cardProductsState extends State<cardProducts> {
 }
 
 class NumberSpinner extends StatefulWidget {
+  final void Function(int nuevaCantidad) onCantidadChanged;
+
   NumberSpinner({
     super.key,
     required this.widget,
     required this.cantidad,
+    required this.onCantidadChanged,
   });
 
   final Widget widget;
@@ -214,12 +256,13 @@ class _NumberSpinnerState extends State<NumberSpinner> {
         TextEditingController(text: widget.cantidad.toString());
   }
 
-  void _updateCantidad(int delta) {
+  void _updateCantidad(int cantidad) {
     setState(() {
-      int newValue = widget.cantidad + delta;
-      if (newValue < 0) return; // Evita valores negativos
+      int newValue = widget.cantidad + cantidad;
+      if (newValue < 0) return;
       widget.cantidad = newValue;
       inputNumberController.text = widget.cantidad.toString();
+      widget.onCantidadChanged(widget.cantidad);
     });
   }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:MyBusiness/Class/Empresa.dart';
+import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:MyBusiness/Theme/ThemeFFDE3F.dart';
 import 'package:crypto/crypto.dart';
@@ -72,6 +73,21 @@ void customSuccessSnackbar(String message, BuildContext context) {
 }
 
 class Utils {
+  Future<List<dynamic>> saveProduct(Producto producto) async {
+    try {
+      final response = await supabaseService.client
+          .from('inventario_producto')
+          .update({
+            "cantidad": producto.cantidad,
+          })
+          .filter('id_producto', 'eq', producto.id_producto)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<dynamic>> getList(String buscar) async {
     final response = await supabaseService.client.from(buscar).select('*');
     return response as List<dynamic>;
@@ -131,7 +147,7 @@ class Utils {
     try {
       final response = await supabaseService.client
           .from('productos')
-          .select('*')
+          .select('*, inventario_producto(cantidad)')
           .eq('id_empresa', empresa.id_empresa)
           .eq('id_categoria', category);
       return response;
