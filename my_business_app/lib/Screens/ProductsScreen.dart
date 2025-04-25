@@ -121,7 +121,6 @@ class _cardProductsState extends State<cardProducts> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
-      height: widget.cardSize,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
@@ -178,12 +177,131 @@ class _cardProductsState extends State<cardProducts> {
                           fontWeight: FontWeight.w500, color: Colors.green),
                     ),
                     SizedBox(height: 4),
+                    NumberSpinner(
+                        widget: widget, cantidad: widget.producto.cantidad),
                   ],
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class NumberSpinner extends StatefulWidget {
+  NumberSpinner({
+    super.key,
+    required this.widget,
+    required this.cantidad,
+  });
+
+  final Widget widget;
+  int cantidad;
+
+  @override
+  State<NumberSpinner> createState() => _NumberSpinnerState();
+}
+
+class _NumberSpinnerState extends State<NumberSpinner> {
+  late TextEditingController inputNumberController;
+
+  @override
+  void initState() {
+    super.initState();
+    inputNumberController =
+        TextEditingController(text: widget.cantidad.toString());
+  }
+
+  void _updateCantidad(int delta) {
+    setState(() {
+      int newValue = widget.cantidad + delta;
+      if (newValue < 0) return; // Evita valores negativos
+      widget.cantidad = newValue;
+      inputNumberController.text = widget.cantidad.toString();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      width: 140,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).cardColor,
+        border: Border.all(
+          color: Theme.of(context).secondaryHeaderColor,
+          width: 1.2,
+        ),
+      ),
+      child: Row(
+        children: [
+          _SpinnerButton(
+            icon: Icons.remove,
+            onTap: () => _updateCantidad(-1),
+          ),
+          Expanded(
+            child: Center(
+              child: TextFormField(
+                controller: inputNumberController,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                style: TextStyle(fontSize: 16),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  isCollapsed: true, // <== reduce padding interno
+                  contentPadding: EdgeInsets.zero,
+                ),
+                onChanged: (value) {
+                  final parsed = int.tryParse(value);
+                  if (parsed != null && parsed >= 0) {
+                    setState(() {
+                      widget.cantidad = parsed;
+                    });
+                  }
+                },
+              ),
+            ),
+          ),
+          _SpinnerButton(
+            icon: Icons.add,
+            onTap: () => _updateCantidad(1),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    inputNumberController.dispose();
+    super.dispose();
+  }
+}
+
+class _SpinnerButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _SpinnerButton({
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon,
+            size: 20, color: Theme.of(context).textTheme.bodyLarge?.color),
       ),
     );
   }
