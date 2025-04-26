@@ -32,6 +32,7 @@
   "MainScreen_products": "Products",
   "ProductsScreen_add_gallery": "Add from gallery",
   "ProductsScreen_moneda": "$",
+  "ProductsScreen_no_changes": "No changes in products",
   "ProductsScreen_product_name": "Product name",
   "ProductsScreen_save_product": "Save product",
   "Register_confirm_pass": "Confirm password",

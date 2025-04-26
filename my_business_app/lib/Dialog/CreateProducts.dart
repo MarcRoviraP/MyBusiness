@@ -11,7 +11,8 @@ import 'package:wc_form_validators/wc_form_validators.dart';
 
 class Createproducts extends StatefulWidget {
   List<String> listaCategorias;
-  Createproducts({super.key, required this.listaCategorias});
+  void Function() refresh;
+  Createproducts({super.key, required this.listaCategorias, required this.refresh});
 
   @override
   State<Createproducts> createState() => _CreateproductsState();
@@ -282,6 +283,7 @@ class _CreateproductsState extends State<Createproducts> {
         customErrorSnackbar(LocaleKeys.CreateProducts_error.tr(), context);
       } else {
         customSuccessSnackbar(LocaleKeys.CreateProducts_succes.tr(), context);
+        widget.refresh();
       }
 
       Navigator.of(context).pop();

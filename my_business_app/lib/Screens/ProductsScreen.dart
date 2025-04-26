@@ -4,12 +4,14 @@ import 'package:MyBusiness/Dialog/CreateProducts.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ProductsScreen extends StatefulWidget {
   ProductsScreen({super.key});
   List<Categoria> listaCategorias = [];
   List<Producto> listaProductos = [];
+  List<Producto> listaProductosAux = [];
 
   @override
   State<ProductsScreen> createState() => _ProductsScreenState();
@@ -43,6 +45,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: FloatingActionButton.extended(
+                          backgroundColor: currentCategory ==
+                                  categoria.id_categoria.toString()
+                              ? Theme.of(context).colorScheme.primaryFixedDim
+                              : Theme.of(context).colorScheme.secondaryFixedDim,
                           onPressed: () {
                             setState(() {
                               currentCategory =
@@ -83,7 +89,28 @@ class _ProductsScreenState extends State<ProductsScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
+                  hoverColor: Theme.of(context).primaryColor,
                   onPressed: () {
+                    bool hayCambios = compararListasProductos(
+                        widget.listaProductos, widget.listaProductosAux);
+                    if (hayCambios) {
+                      customErrorSnackbar(
+                          LocaleKeys.ProductsScreen_no_changes.tr(), context);
+                      return;
+                    }
+                    widget.listaProductosAux = widget.listaProductos.map((e) {
+                      Producto producto = Producto(
+                        id_producto: e.id_producto,
+                        nombre: e.nombre,
+                        descripcion: e.descripcion,
+                        precio: e.precio,
+                        url_img: e.url_img,
+                        id_categoria: e.id_categoria,
+                        id_empresa: e.id_empresa,
+                      );
+                      producto.cantidad = e.cantidad;
+                      return producto;
+                    }).toList();
                     saveProducts();
                   },
                   child: Icon(Icons.save_sharp),
@@ -100,6 +127,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           listaCategorias: widget.listaCategorias
                               .map((e) => e.nombre)
                               .toList(),
+                          refresh: () {
+                            setState(() {
+                              loadInfo();
+                            });
+                          },
                         );
                       },
                     );
@@ -119,7 +151,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       Utils().saveProduct(producto);
     }
 
-    customSuccessSnackbar(LocaleKeys.ProductsScreen_save_product, context);
+    customSuccessSnackbar(LocaleKeys.ProductsScreen_save_product.tr(), context);
   }
 
   Future<void> loadInfo() async {
@@ -136,7 +168,30 @@ class _ProductsScreenState extends State<ProductsScreen> {
       producto.cantidad = e["inventario_producto"][0]["cantidad"];
       return producto;
     }).toList();
+    widget.listaProductosAux = widget.listaProductos.map((e) {
+      Producto producto = Producto(
+        id_producto: e.id_producto,
+        nombre: e.nombre,
+        descripcion: e.descripcion,
+        precio: e.precio,
+        url_img: e.url_img,
+        id_categoria: e.id_categoria,
+        id_empresa: e.id_empresa,
+      );
+      producto.cantidad = e.cantidad;
+      return producto;
+    }).toList();
   }
+}
+
+bool compararListasProductos(
+    List<Producto> listaProductos, List<Producto> listaProductosAux) {
+  for (int index = 0; index < listaProductos.length; index += 1) {
+    if (listaProductos[index].cantidad != listaProductosAux[index].cantidad) {
+      return false;
+    }
+  }
+  return true;
 }
 
 class cardProducts extends StatefulWidget {
@@ -145,7 +200,6 @@ class cardProducts extends StatefulWidget {
   cardProducts(
       {super.key, required this.producto, required this.onCantidadChanged});
   double tamanyo = 50;
-  double cardSize = 150;
 
   @override
   State<cardProducts> createState() => _cardProductsState();
@@ -167,13 +221,11 @@ class _cardProductsState extends State<cardProducts> {
                 onLongPress: () {
                   setState(() {
                     widget.tamanyo = 150;
-                    widget.cardSize = 180;
                   });
                 },
                 onLongPressUp: () {
                   setState(() {
                     widget.tamanyo = 50;
-                    widget.cardSize = 150;
                   });
                 },
                 child: widget.producto.url_img.isEmpty
