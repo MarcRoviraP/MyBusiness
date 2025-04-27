@@ -3,6 +3,7 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
+  static const BusinessScreen_inventory = 'BusinessScreen_inventory';
   static const BusinessScreen_invitacions = 'BusinessScreen_invitacions';
   static const BusinessScreen_start = 'BusinessScreen_start';
   static const CreateBusiness_business_created = 'CreateBusiness_business_created';
@@ -20,6 +21,12 @@ abstract class  LocaleKeys {
   static const CreateProducts_price = 'CreateProducts_price';
   static const CreateProducts_succes = 'CreateProducts_succes';
   static const CreateProducts_too_long = 'CreateProducts_too_long';
+  static const InventoryScreen_category = 'InventoryScreen_category';
+  static const InventoryScreen_download = 'InventoryScreen_download';
+  static const InventoryScreen_name = 'InventoryScreen_name';
+  static const InventoryScreen_precio_total = 'InventoryScreen_precio_total';
+  static const InventoryScreen_price = 'InventoryScreen_price';
+  static const InventoryScreen_quantity = 'InventoryScreen_quantity';
   static const InvitesScreen_no_invites = 'InvitesScreen_no_invites';
   static const InvitesScreen_title_invite = 'InvitesScreen_title_invite';
   static const JoinBusiness_enter_business_id = 'JoinBusiness_enter_business_id';

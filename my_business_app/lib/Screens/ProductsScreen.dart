@@ -45,6 +45,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: FloatingActionButton.extended(
+                          heroTag: categoria.id_categoria.toString(),
                           backgroundColor: currentCategory ==
                                   categoria.id_categoria.toString()
                               ? Theme.of(context).colorScheme.primaryFixedDim
@@ -90,6 +91,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               children: [
                 FloatingActionButton(
                   hoverColor: Theme.of(context).primaryColor,
+                  heroTag: "save",
                   onPressed: () {
                     bool hayCambios = compararListasProductos(
                         widget.listaProductos, widget.listaProductosAux);
@@ -119,6 +121,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   height: 10,
                 ),
                 FloatingActionButton(
+                  heroTag: "add",
                   onPressed: () {
                     showDialog(
                       context: context,

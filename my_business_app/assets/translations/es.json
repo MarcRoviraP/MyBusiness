@@ -1,4 +1,5 @@
 {
+  "BusinessScreen_inventory": "Inventario",
   "BusinessScreen_invitacions": "Invitaciones",
   "BusinessScreen_start": "Inicio",
   "CreateBusiness_business_created": "El negocio ha sido creado.",
@@ -16,6 +17,12 @@
   "CreateProducts_price": "Precio",
   "CreateProducts_succes": "El producto se ha creado con exito",
   "CreateProducts_too_long": "Máximo 15 digitos",
+  "InventoryScreen_category": "Categoria",
+  "InventoryScreen_download": "Descarga",
+  "InventoryScreen_name": "Nombre",
+  "InventoryScreen_precio_total": "Precio total",
+  "InventoryScreen_price": "Precio",
+  "InventoryScreen_quantity": "Cantidad",
   "InvitesScreen_no_invites": "No hay invitaciones",
   "InvitesScreen_title_invite": "quiere unirse a tu negocio",
   "JoinBusiness_enter_business_id": "Ingresa el ID de la empresa",

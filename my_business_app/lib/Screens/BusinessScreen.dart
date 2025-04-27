@@ -1,3 +1,4 @@
+import 'package:MyBusiness/Screens/InventoryScreen.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,6 +21,7 @@ class _BusinessscreenState extends State<Businessscreen> {
   List<Widget> screens = <Widget>[
     startBusinessScreen(),
     Invitesscreen(),
+    Inventoryscreen(),
   ];
 
   @override
@@ -55,6 +57,10 @@ class _BusinessscreenState extends State<Businessscreen> {
             icon: Icon(Icons.mail_outline),
             selectedIcon: Icon(Icons.mail),
             label: LocaleKeys.BusinessScreen_invitacions.tr(),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.inventory_outlined),
+            label: LocaleKeys.BusinessScreen_inventory.tr(),
           ),
         ],
       ),

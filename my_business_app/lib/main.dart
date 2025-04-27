@@ -14,13 +14,23 @@ import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/Login.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:flutter_launcher_icons/logger.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await solicitarPermisoNotificaciones();
 
   await supabaseService.init();
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   runApp(
     EasyLocalization(

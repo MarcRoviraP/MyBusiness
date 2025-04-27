@@ -6,9 +6,12 @@ import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:MyBusiness/Theme/ThemeFFDE3F.dart';
+import 'package:MyBusiness/main.dart';
 import 'package:crypto/crypto.dart';
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
@@ -48,6 +51,43 @@ Future<dynamic> uploadImage(File imageFile, String name) async {
       .upload(name, imageFile);
 
   return response;
+}
+Future<void> solicitarPermisoNotificaciones() async {
+  PermissionStatus status = await Permission.notification.status;
+
+  if (status.isDenied) {
+    // Si está denegado, solicita permiso
+    await Permission.notification.request();
+  }
+}
+Future<void> mostrarNotificacion({
+  required String titulo,
+  required String cuerpo,
+  int id = 0,
+  String canalId = 'default_channel',
+  String canalNombre = 'Notificaciones',
+  Importance importancia = Importance.high,
+  Priority prioridad = Priority.high,
+}) async {
+
+  final androidDetails = AndroidNotificationDetails(
+    canalId,
+    canalNombre,
+    importance: importancia,
+    priority: prioridad,
+    showWhen: true,
+  );
+
+  final notificationDetails = NotificationDetails(
+    android: androidDetails,
+  );
+
+  await flutterLocalNotificationsPlugin.show(
+    id,
+    titulo,
+    cuerpo,
+    notificationDetails,
+  );
 }
 
 void customErrorSnackbar(String message, BuildContext context) {
@@ -150,6 +190,18 @@ class Utils {
           .select('*, inventario_producto(cantidad)')
           .eq('id_empresa', empresa.id_empresa)
           .eq('id_categoria', category);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getProducts() async {
+    try {
+      final response = await supabaseService.client
+          .from('productos')
+          .select('*, inventario_producto(cantidad)')
+          .eq('id_empresa', empresa.id_empresa);
       return response;
     } catch (e) {
       return [];
