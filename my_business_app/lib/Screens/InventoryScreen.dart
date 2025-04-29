@@ -80,12 +80,13 @@ class _InventoryscreenState extends State<Inventoryscreen> {
         base: pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
         bold: pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Bold.ttf")),
         italic: pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Italic.ttf")),
+
       ),
+
     );
     
-    DateTime now = DateTime.now();
-    String hora =
-        "${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}";
+  DateTime now = DateTime.now();
+  String hora = DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
