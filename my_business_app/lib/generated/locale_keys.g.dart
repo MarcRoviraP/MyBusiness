@@ -23,10 +23,12 @@ abstract class  LocaleKeys {
   static const CreateProducts_too_long = 'CreateProducts_too_long';
   static const InventoryScreen_category = 'InventoryScreen_category';
   static const InventoryScreen_download = 'InventoryScreen_download';
+  static const InventoryScreen_inventory_value = 'InventoryScreen_inventory_value';
   static const InventoryScreen_name = 'InventoryScreen_name';
   static const InventoryScreen_precio_total = 'InventoryScreen_precio_total';
   static const InventoryScreen_price = 'InventoryScreen_price';
   static const InventoryScreen_quantity = 'InventoryScreen_quantity';
+  static const InventoryScreen_solicitante = 'InventoryScreen_solicitante';
   static const InvitesScreen_no_invites = 'InvitesScreen_no_invites';
   static const InvitesScreen_title_invite = 'InvitesScreen_title_invite';
   static const JoinBusiness_enter_business_id = 'JoinBusiness_enter_business_id';
