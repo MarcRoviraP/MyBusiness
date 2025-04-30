@@ -248,13 +248,7 @@ class _RegisterState extends State<Register> {
 
           usuario = Usuario.fromJson(value[0]);
           Utils().setSharedString(shared_mail, mail);
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MainScreen(),
-            ),
-            (Route<dynamic> route) => false,
-          );
+          openNewScreen(context, MainScreen());
         } else {
           // Si el usuario no existe, mostrar un mensaje de error
           customErrorSnackbar(LocaleKeys.Register_user_exist.tr(), context);
@@ -264,11 +258,6 @@ class _RegisterState extends State<Register> {
   }
 
   void backToLogin() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Login(),
-      ),
-    );
+    openNewScreen(context, Login());
   }
 }

@@ -41,9 +41,7 @@ class _InvitesscreenState extends State<Invitesscreen> {
     return FutureBuilder(
         future: Utils().getInvites(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          if (snapshot.hasError) {
             return Center(
                 child: Text(LocaleKeys.InvitesScreen_no_invites.tr()));
           } else if (snapshot.hasData) {

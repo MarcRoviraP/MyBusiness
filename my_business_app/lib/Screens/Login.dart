@@ -210,22 +210,11 @@ class _LoginState extends State<Login> {
             await Utils().getEmpresa(userEmpresa[0]['id_empresa'].toString());
         empresa = Empresa.fromJson(empresaList[0]);
       }
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainScreen(),
-        ),
-        (Route<dynamic> route) => false,
-      );
+      openNewScreen(context, MainScreen());
     }
   }
 
   void registro() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Register(),
-      ),
-    );
+    openNewScreen(context, Register());
   }
 }

@@ -118,10 +118,7 @@ class _CreatebusinessState extends State<Createbusiness> {
 
           customSuccessSnackbar(
               LocaleKeys.CreateBusiness_business_created.tr(), context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Businessscreen()),
-          );
+          openNewScreen(context, Businessscreen());
         }
       });
     }

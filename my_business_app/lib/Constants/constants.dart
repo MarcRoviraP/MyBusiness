@@ -44,7 +44,24 @@ Usuario usuario = Usuario(
 String bucketProducts = "products";
 ColorScheme temaLight = ThemeFFDE3F.lightScheme();
 ColorScheme temaDark = ThemeFFDE3F.darkScheme();
-
+  void openNewScreen(BuildContext context, Widget screen) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 300),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            screen,
+        transitionsBuilder:
+            (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
+      (route) => false,
+    );
+  }
 Future<dynamic> uploadImage(File imageFile, String name) async {
   final response = await supabaseService.client.storage
       .from(bucketProducts)
@@ -63,6 +80,7 @@ Future<void> solicitarPermisoNotificaciones() async {
 Future<void> mostrarNotificacion({
   required String titulo,
   required String cuerpo,
+  String payload = "",
   int id = 0,
   String canalId = 'default_channel',
   String canalNombre = 'Notificaciones',
@@ -87,6 +105,7 @@ Future<void> mostrarNotificacion({
     titulo,
     cuerpo,
     notificationDetails,
+    payload: payload,
   );
 }
 
@@ -335,11 +354,7 @@ class _MapaEmpresaWidgetState extends State<MapaEmpresaWidget> {
     return FutureBuilder(
       future: _determinePosition(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
+       if (snapshot.hasError) {
           return Center(
             child: Text('Error: ${snapshot.error}'),
           );

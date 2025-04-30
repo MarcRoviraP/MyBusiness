@@ -31,12 +31,7 @@ class _BusinessscreenState extends State<Businessscreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainScreen(),
-                ),
-                (Route<dynamic> route) => false);
+            openNewScreen(context, MainScreen());
           },
         ),
       ),

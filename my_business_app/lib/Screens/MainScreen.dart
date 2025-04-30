@@ -28,12 +28,12 @@ class _MainScreenState extends State<MainScreen> {
     List<Widget> screens = empresa.id_empresa != 0
         ? <Widget>[
             Inicio(),
-            Inicio(),
+            Scaffold(),
             ProductsScreen(),
           ]
         : <Widget>[
             Inicio(),
-            Inicio(),
+            Scaffold(),
           ];
 
     var destinations = empresa.id_empresa != 0
@@ -100,19 +100,11 @@ class _MainScreenState extends State<MainScreen> {
           empresa = Empresa.fromJson(value[0]);
 
           // Si existe, redirigir a la pantalla de empresa
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => Businessscreen()),
-            (Route<dynamic> route) => false,
-          );
+          openNewScreen(context, Businessscreen());
         });
       } else {
         // Si no existe, redirigir a la pantalla de creación de empresa
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => Businessselectorscreen()),
-          (Route<dynamic> route) => false,
-        );
+        openNewScreen(context, Businessselectorscreen());
         empresa = Empresa(
           id_empresa: 0,
           nombre: "",
@@ -126,13 +118,7 @@ class _MainScreenState extends State<MainScreen> {
   void cerrarSesion() async {
     await Utils().setSharedString(shared_mail, "");
     await Utils().setSharedString(shared_empresa_id, "");
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Login(),
-      ),
-      (Route<dynamic> route) => false,
-    );
+    openNewScreen(context, Login());
     empresa = Empresa(
       id_empresa: 0,
       nombre: "",

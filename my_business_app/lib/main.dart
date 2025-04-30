@@ -15,6 +15,8 @@ import 'package:MyBusiness/Screens/Login.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:flutter_launcher_icons/logger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:open_file/open_file.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -27,10 +29,20 @@ void main() async {
   await supabaseService.init();
 
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+      AndroidInitializationSettings('@mipmap/launcher_icon');
   const InitializationSettings initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onDidReceiveNotificationResponse: (details) async {
+    if (details.payload == null) {
+      return;
+    }
+    if (details.payload!.contains(".pdf")) {
+      await OpenFile.open(
+        details.payload!,
+      );
+    }
+  });
 
   runApp(
     EasyLocalization(

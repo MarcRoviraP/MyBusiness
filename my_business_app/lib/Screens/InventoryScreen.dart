@@ -29,9 +29,7 @@ class _InventoryscreenState extends State<Inventoryscreen> {
     return FutureBuilder(
         future: loadInfo(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             return Scaffold(
@@ -77,16 +75,17 @@ class _InventoryscreenState extends State<Inventoryscreen> {
     simbolo = LocaleKeys.ProductsScreen_moneda.tr();
     final pdf = pw.Document(
       theme: pw.ThemeData.withFont(
-        base: pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
-        bold: pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Bold.ttf")),
-        italic: pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Italic.ttf")),
-
+        base: pw.Font.ttf(
+            await rootBundle.load("assets/fonts/Roboto-Regular.ttf")),
+        bold:
+            pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Bold.ttf")),
+        italic: pw.Font.ttf(
+            await rootBundle.load("assets/fonts/Roboto-Italic.ttf")),
       ),
-
     );
-    
-  DateTime now = DateTime.now();
-  String hora = DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
+
+    DateTime now = DateTime.now();
+    String hora = DateFormat('dd/MM/yyyy HH:mm:ss').format(now);
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
@@ -252,7 +251,9 @@ class _InventoryscreenState extends State<Inventoryscreen> {
 
     await file.writeAsBytes(await pdf.save());
     mostrarNotificacion(
-        titulo: LocaleKeys.InventoryScreen_download.tr(), cuerpo: fileName);
+        titulo: LocaleKeys.InventoryScreen_download.tr(),
+        cuerpo: fileName,
+        payload: file.path);
   }
 
   String getInventoryValue() {
