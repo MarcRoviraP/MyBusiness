@@ -88,7 +88,39 @@ class _MainScreenState extends State<MainScreen> {
         ],
         title: Text(''),
       ),
-      body: screens[selectedIndex],
+      body: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        // Curva de entrada y salida de la animación
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        transitionBuilder: (child, animation) {
+          final offsetAnimation = Tween<Offset>(
+            // Creamos un desplazamiento de -1.0 en el eje x
+            begin: const Offset(-1.0, 0.0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOutCubic,
+          ));
+
+          // Combina la animación de desplazamiento con la animación de opacidad para crear un efecto de deslizamiento y desvanecimiento
+          return SlideTransition(
+            position: offsetAnimation,
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+        child: Container(
+          // Al cambiar el valor de la key, indicamos a la animación que debe reiniciarse
+          key: ValueKey(selectedIndex),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: screens[selectedIndex],
+          ),
+        ),
+      ),
     );
   }
 

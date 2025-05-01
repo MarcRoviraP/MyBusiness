@@ -22,7 +22,7 @@ class _InventoryscreenState extends State<Inventoryscreen> {
   List<Producto> productos = [];
   List<Categoria> listaCategorias = [];
   Map<Categoria, List<Producto>> info = {};
-  String simbolo = "";
+  String simbolo = LocaleKeys.ProductsScreen_moneda.tr();
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +33,55 @@ class _InventoryscreenState extends State<Inventoryscreen> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             return Scaffold(
-              appBar: AppBar(
-                title: Text(LocaleKeys.BusinessScreen_inventory.tr()),
-              ),
-              body: Text("DONE"),
+              body: ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: info.length,
+                  itemBuilder: (context, index) {
+                    Categoria categoria = info.keys.elementAt(index);
+                    List<Producto> listProducts = info[categoria]!;
+                    return Card(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(categoria.nombre,
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface)),
+                          ),
+                          Column(
+                            children: listProducts
+                                .map((e) => ListTile(
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(e.nombre,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface)),
+                                          Text("${e.precio} $simbolo",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface)),
+                                        ],
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
               floatingActionButton: FloatingActionButton(
+                hoverColor: Theme.of(context).hoverColor,
                 onPressed: () {
                   createPDF();
                 },
