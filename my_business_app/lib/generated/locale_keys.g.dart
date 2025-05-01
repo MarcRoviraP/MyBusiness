@@ -3,9 +3,13 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
+  static const BusinessScreen_chat = 'BusinessScreen_chat';
   static const BusinessScreen_inventory = 'BusinessScreen_inventory';
   static const BusinessScreen_invitacions = 'BusinessScreen_invitacions';
   static const BusinessScreen_start = 'BusinessScreen_start';
+  static const BussinesChat_open_camera = 'BussinesChat_open_camera';
+  static const BussinesChat_select_from_gallery = 'BussinesChat_select_from_gallery';
+  static const BussinesChat_type_message = 'BussinesChat_type_message';
   static const CreateBusiness_business_created = 'CreateBusiness_business_created';
   static const CreateBusiness_business_error = 'CreateBusiness_business_error';
   static const CreateBusiness_business_name = 'CreateBusiness_business_name';

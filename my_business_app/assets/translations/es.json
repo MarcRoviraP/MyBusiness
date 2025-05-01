@@ -1,7 +1,11 @@
 {
+  "BusinessScreen_chat": "Chat",
   "BusinessScreen_inventory": "Inventario",
   "BusinessScreen_invitacions": "Invitaciones",
   "BusinessScreen_start": "Inicio",
+  "BussinesChat_open_camera": "Abrir cámara",
+  "BussinesChat_select_from_gallery": "Seleccionar de galería",
+  "BussinesChat_type_message": "Escribe mensaje",
   "CreateBusiness_business_created": "El negocio ha sido creado.",
   "CreateBusiness_business_error": "Se ha producido un error, prueba con otro nombre.",
   "CreateBusiness_business_name": "Nombre del negocio",

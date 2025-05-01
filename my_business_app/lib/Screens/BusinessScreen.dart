@@ -1,3 +1,4 @@
+import 'package:MyBusiness/Screens/BussinesChat.dart';
 import 'package:MyBusiness/Screens/InventoryScreen.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
@@ -22,6 +23,7 @@ class _BusinessscreenState extends State<Businessscreen> {
     startBusinessScreen(),
     Invitesscreen(),
     Inventoryscreen(),
+    Bussineschat(),
   ];
 
   @override
@@ -56,6 +58,11 @@ class _BusinessscreenState extends State<Businessscreen> {
           NavigationDestination(
             icon: Icon(Icons.inventory_outlined),
             label: LocaleKeys.BusinessScreen_inventory.tr(),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.mark_unread_chat_alt_outlined),
+            selectedIcon: Icon(Icons.mark_unread_chat_alt_sharp),
+            label: LocaleKeys.BusinessScreen_chat.tr(),
           ),
         ],
       ),

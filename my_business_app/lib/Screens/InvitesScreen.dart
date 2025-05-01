@@ -16,7 +16,6 @@ class Invitesscreen extends StatefulWidget {
 }
 
 class _InvitesscreenState extends State<Invitesscreen> {
-  dynamic a = "";
   @override
   void initState() {
     super.initState();

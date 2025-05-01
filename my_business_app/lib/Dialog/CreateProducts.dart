@@ -147,7 +147,6 @@ class _CreateproductsState extends State<Createproducts> {
                 key: categoryKey,
                 validator: Validators.required(
                     LocaleKeys.Register_required_field.tr()),
-                // onSubmitted: (String value) => onFieldSubmitted(),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   labelText: LocaleKeys.CreateProducts_category.tr(),
@@ -235,7 +234,7 @@ class _CreateproductsState extends State<Createproducts> {
         // Guarda la imagen en el servidor
         name =
             "${DateTime.now().millisecondsSinceEpoch}${productNameController.text}.png";
-        await uploadImage(File(picture!.path), name);
+        await uploadImage(File(picture!.path), name,bucketProducts);
       }
       // Verifica si la categoria existe
       int id_categoria = 0;

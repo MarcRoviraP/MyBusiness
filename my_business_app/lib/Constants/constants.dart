@@ -42,33 +42,33 @@ Usuario usuario = Usuario(
 );
 
 String bucketProducts = "products";
+String bucketChat = "chat";
 ColorScheme temaLight = ThemeFFDE3F.lightScheme();
 ColorScheme temaDark = ThemeFFDE3F.darkScheme();
-  void openNewScreen(BuildContext context, Widget screen) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      PageRouteBuilder(
-        transitionDuration: Duration(milliseconds: 300),
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            screen,
-        transitionsBuilder:
-            (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-      ),
-      (route) => false,
-    );
-  }
-Future<dynamic> uploadImage(File imageFile, String name) async {
-  final response = await supabaseService.client.storage
-      .from(bucketProducts)
-      .upload(name, imageFile);
+void openNewScreen(BuildContext context, Widget screen) {
+  Navigator.pushAndRemoveUntil(
+    context,
+    PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) => screen,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+    ),
+    (route) => false,
+  );
+}
+
+Future<dynamic> uploadImage(File imageFile, String name, String bucket) async {
+  final response =
+      await supabaseService.client.storage.from(bucket).upload(name, imageFile);
 
   return response;
 }
+
 Future<void> solicitarPermisoNotificaciones() async {
   PermissionStatus status = await Permission.notification.status;
 
@@ -77,6 +77,7 @@ Future<void> solicitarPermisoNotificaciones() async {
     await Permission.notification.request();
   }
 }
+
 Future<void> mostrarNotificacion({
   required String titulo,
   required String cuerpo,
@@ -87,7 +88,6 @@ Future<void> mostrarNotificacion({
   Importance importancia = Importance.high,
   Priority prioridad = Priority.high,
 }) async {
-
   final androidDetails = AndroidNotificationDetails(
     canalId,
     canalNombre,
@@ -152,6 +152,19 @@ class Utils {
     return response as List<dynamic>;
   }
 
+  Future<List<dynamic>> getChat() async {
+    try {
+      final response = await supabaseService.client
+          .from('chat_empresa')
+          .select('*, usuario:usuarios(*)')
+          .eq('id_empresa', empresa.id_empresa)
+          .order('fecha_envio', ascending: false);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<dynamic>> getInventario() async {
     try {
       final response = await supabaseService.client
@@ -195,7 +208,8 @@ class Utils {
       final response = await supabaseService.client
           .from('categorias')
           .select('*')
-          .eq('id_empresa', empresa.id_empresa);
+          .eq('id_empresa', empresa.id_empresa)
+          .order('nombre', ascending: true);
       return response;
     } catch (e) {
       return [];
@@ -208,7 +222,8 @@ class Utils {
           .from('productos')
           .select('*, inventario_producto(cantidad)')
           .eq('id_empresa', empresa.id_empresa)
-          .eq('id_categoria', category);
+          .eq('id_categoria', category)
+          .order('nombre', ascending: true);
       return response;
     } catch (e) {
       return [];
@@ -220,7 +235,8 @@ class Utils {
       final response = await supabaseService.client
           .from('productos')
           .select('*, inventario_producto(cantidad)')
-          .eq('id_empresa', empresa.id_empresa);
+          .eq('id_empresa', empresa.id_empresa)
+          .order('nombre', ascending: true);
       return response;
     } catch (e) {
       return [];
@@ -354,7 +370,7 @@ class _MapaEmpresaWidgetState extends State<MapaEmpresaWidget> {
     return FutureBuilder(
       future: _determinePosition(),
       builder: (context, snapshot) {
-       if (snapshot.hasError) {
+        if (snapshot.hasError) {
           return Center(
             child: Text('Error: ${snapshot.error}'),
           );

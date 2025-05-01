@@ -3,6 +3,7 @@ import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Dialog/CreateProducts.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -237,8 +238,9 @@ class _cardProductsState extends State<cardProducts> {
                     ? Icon(Icons.shop, size: widget.tamanyo)
                     : ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/products//${widget.producto.url_img}",
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketProducts//${widget.producto.url_img}",
                           width: widget.tamanyo,
                           height: widget.tamanyo,
                           fit: BoxFit.cover,
