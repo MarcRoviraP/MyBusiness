@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
 import 'package:MyBusiness/Constants/constants.dart';
+import 'package:MyBusiness/Dialog/ShowImage.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -108,10 +109,21 @@ class _BussineschatState extends State<Bussineschat> {
                                 ),
                                 const SizedBox(height: 5),
                                 message.imagen_url != ""
-                                    ? CachedNetworkImage(
-                                        imageUrl:
-                                            "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}",
-                                        width: 200,
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            builder: (context) => ShowImage(
+                                                url:
+                                                    "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}"),
+                                          );
+                                        },
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}",
+                                          width: 200,
+                                        ),
                                       )
                                     : const SizedBox(),
                                 Text(
