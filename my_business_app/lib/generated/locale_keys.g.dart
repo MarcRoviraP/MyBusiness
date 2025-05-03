@@ -4,6 +4,7 @@
 
 abstract class  LocaleKeys {
   static const BusinessScreen_chat = 'BusinessScreen_chat';
+  static const BusinessScreen_employee = 'BusinessScreen_employee';
   static const BusinessScreen_inventory = 'BusinessScreen_inventory';
   static const BusinessScreen_invitacions = 'BusinessScreen_invitacions';
   static const BusinessScreen_start = 'BusinessScreen_start';
@@ -25,6 +26,9 @@ abstract class  LocaleKeys {
   static const CreateProducts_price = 'CreateProducts_price';
   static const CreateProducts_succes = 'CreateProducts_succes';
   static const CreateProducts_too_long = 'CreateProducts_too_long';
+  static const EmployeesScreen_ascend = 'EmployeesScreen_ascend';
+  static const EmployeesScreen_degrade = 'EmployeesScreen_degrade';
+  static const EmployeesScreen_delete = 'EmployeesScreen_delete';
   static const InventoryScreen_category = 'InventoryScreen_category';
   static const InventoryScreen_download = 'InventoryScreen_download';
   static const InventoryScreen_inventory_value = 'InventoryScreen_inventory_value';

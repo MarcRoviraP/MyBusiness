@@ -1,5 +1,6 @@
 {
   "BusinessScreen_chat": "Chat",
+  "BusinessScreen_employee": "Employee",
   "BusinessScreen_inventory": "Inventory",
   "BusinessScreen_invitacions": "Invitations",
   "BusinessScreen_start": "Home",
@@ -21,6 +22,9 @@
   "CreateProducts_price": "Price",
   "CreateProducts_succes": "The product has been created succesfully",
   "CreateProducts_too_long": "Max 13 digits",
+  "EmployeesScreen_ascend": "Ascend",
+  "EmployeesScreen_degrade": "Degrade",
+  "EmployeesScreen_delete": "Delete",
   "InventoryScreen_category": "Category",
   "InventoryScreen_download": "Descarga",
   "InventoryScreen_inventory_value": "Inventory value",

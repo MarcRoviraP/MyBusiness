@@ -12,13 +12,50 @@ class ShowImage extends StatefulWidget {
 }
 
 class _ShowImageState extends State<ShowImage> {
+  TransformationController transformationController =
+      TransformationController();
+
+  @override
+  void dispose() {
+    transformationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-        backgroundColor: Colors.transparent,
-        content: InteractiveViewer(
-            child: CachedNetworkImage(
-          imageUrl: widget.url,
-        )));
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(150, 0, 0, 0),
+        body: GestureDetector(
+          onTap: () {},
+          onDoubleTap: () {
+            transformationController.value = Matrix4.identity();
+          },
+          child: Center(
+            child: InteractiveViewer(
+                transformationController: transformationController,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: CachedNetworkImage(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    imageUrl: widget.url,
+                  ),
+                )),
+          ),
+        ),
+      ),
+    );
   }
 }

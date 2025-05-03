@@ -243,6 +243,34 @@ class Utils {
     }
   }
 
+  Future<List<dynamic>> cambiarRol(int user_id, String rol) async {
+    try {
+      final response = await supabaseService.client
+          .from('usuario_empresa')
+          .update({
+            "rol": rol,
+          })
+          .filter('id_usuario_emp', 'eq', user_id)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> eliminar(int user_id) async {
+    try {
+      final response = await supabaseService.client
+          .from('usuario_empresa')
+          .delete()
+          .filter('id_usuario_emp', 'eq', user_id)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<dynamic>> updateInvitacionState(
       int user_id, String estado) async {
     try {
@@ -266,6 +294,7 @@ class Utils {
           .from('invitacion_empresa')
           .update({
             "fecha_solicitud": DateTime.now().toIso8601String(),
+            "estado": Pendiente,
           })
           .filter('id_empresa', 'eq', e.id_empresa)
           .filter('id_usuario', 'eq', usuario.id_usuario)
@@ -294,6 +323,18 @@ class Utils {
           .from('empresas')
           .select('*')
           .eq('id_empresa', idEmpresa);
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getUsersEmpresa() async {
+    try {
+      final response = await supabaseService.client
+          .from('usuario_empresa')
+          .select('*,usuario:usuarios(*)')
+          .eq('id_empresa', empresa.id_empresa);
       return response;
     } catch (e) {
       return [];
@@ -365,16 +406,26 @@ class _MapaEmpresaWidgetState extends State<MapaEmpresaWidget> {
   LatLng _selectedLocation = LatLng(39.4625, -0.3739);
 
   @override
+  void dispose() {
+    super.dispose();
+    currentLocations = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (currentLocations) return mapa();
     return FutureBuilder(
       future: _determinePosition(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
           return Center(
             child: Text('Error: ${snapshot.error}'),
           );
-        } else {
+        } else if (snapshot.hasData) {
           Position position = snapshot.data as Position;
           _selectedLocation = LatLng(position.latitude, position.longitude);
           currentLocations = true;
