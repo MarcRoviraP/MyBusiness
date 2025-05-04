@@ -90,6 +90,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/img/logo_mb.png
+    - assets/img/logo_mb_no_bg.png
     - assets/fonts/Roboto-Regular.ttf
     - assets/fonts/Roboto-Bold.ttf
     - assets/fonts/Roboto-Italic.ttf

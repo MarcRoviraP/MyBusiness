@@ -68,7 +68,7 @@ class _SplashscreenState extends State<Splashscreen> {
           child: Opacity(
             opacity: 0.3,
             child: Image.asset(
-              'assets/img/logo_mb.png',
+              'assets/img/logo_mb_no_bg.png',
               width: 300,
               height: 300,
               fit: BoxFit.contain,
