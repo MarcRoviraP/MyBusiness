@@ -1,5 +1,6 @@
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
+import 'package:MyBusiness/Screens/SplashScreen.dart';
 import 'package:MyBusiness/Theme/Theme0063D8.dart';
 import 'package:MyBusiness/Theme/Theme63A002.dart';
 import 'package:MyBusiness/Theme/Theme949CAE.dart';
@@ -58,104 +59,76 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-  });
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Widget homeScreen = Login();
-    return FutureBuilder(
-      future: Future.wait(
-        [
-          preInitMainScreen(),
-          Utils().getSharedString(shared_theme),
-        ],
-      ),
+    return FutureBuilder<String>(
+      future: Utils().getSharedString(shared_theme),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.white,
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Error'));
-        } else {
-          var response = snapshot.data;
-          response ??= ["", ""];
-
-          String mail = response[0].toString();
-          String theme = response[1].toString();
-
-          if (mail != "") {
-            homeScreen = MainScreen();
-          }
-
+       if (snapshot.hasData) {
+          final theme = snapshot.data!;
           switch (theme) {
-            case "#FFDE3F":
+            case "#FFDE3F": // Amarillo
               temaLight = ThemeFFDE3F.lightScheme();
               temaDark = ThemeFFDE3F.darkHighContrastScheme();
               break;
-            case "#949CAE":
+            case "#949CAE": // Gris
               temaLight = Theme949CAE.lightScheme();
               temaDark = Theme949CAE.darkHighContrastScheme();
               break;
-            case "#FF6D66":
+            case "#FF6D66": // Rojo
               temaLight = ThemeFF6D66.lightScheme();
               temaDark = ThemeFF6D66.darkHighContrastScheme();
               break;
-            case "#63A002":
+            case "#63A002": // Verde
               temaLight = Theme63A002.lightScheme();
               temaDark = Theme63A002.darkHighContrastScheme();
               break;
-            case "#0063D8":
+            case "#0063D8": // Azul
               temaLight = Theme0063D8.lightScheme();
               temaDark = Theme0063D8.darkHighContrastScheme();
               break;
-            case "#B11AC1":
+            case "#B11AC1": // Rosa
               temaLight = ThemeB11AC1.lightScheme();
               temaDark = ThemeB11AC1.darkHighContrastScheme();
               break;
-            default:
-              break;
           }
-        }
 
-        final lightTextTheme =
-            createTextTheme(context, "Afacad", "Afacad", false);
-        final darkTextTheme =
-            createTextTheme(context, "Afacad", "Afacad", true);
-        return MaterialApp(
+          lightTextTheme = createTextTheme(
+              context: context,
+              bodyFontString: "Afacad",
+              displayFontString: "Afacad",
+              isDarkMode: false);
+          darkTextTheme = createTextTheme(
+              context: context,
+              bodyFontString: "Afacad",
+              displayFontString: "Afacad",
+              isDarkMode: true);
+          return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.from(
-                colorScheme: temaLight, textTheme: lightTextTheme),
+            theme:
+                ThemeData.from(colorScheme: temaLight, textTheme: lightTextTheme),
             darkTheme:
                 ThemeData.from(colorScheme: temaDark, textTheme: darkTextTheme),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            home: homeScreen);
+            home: const Splashscreen(),
+          );
+        } else {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: const Center(
+              child: SpinKitFadingCircle(
+                color: Colors.blue,
+                size: 50.0,
+              ),
+            ),
+          );
+        }
       },
     );
-  }
-
-  Future<String> preInitMainScreen() async {
-    var mail = await Utils().getSharedString(shared_mail);
-    try {
-      var userMailList = await Utils().getUserMail(mail);
-
-      usuario = Usuario.fromJson(userMailList[0]);
-      var userEmpresaList =
-          await Utils().getUserEmpresa(usuario.id_usuario.toString());
-      if (userEmpresaList.isNotEmpty) {
-        var empresaList = await Utils()
-            .getEmpresa(userEmpresaList[0]['id_empresa'].toString());
-        empresa = Empresa.fromJson(empresaList[0]);
-      }
-    } catch (e) {}
-
-    return mail;
   }
 }
 

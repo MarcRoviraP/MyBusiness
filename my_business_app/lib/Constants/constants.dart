@@ -32,6 +32,8 @@ String Administrador_empresa = "Administrador";
 String Usuario_empresa = "Usuario";
 bool currentLocations = false;
 String direccion = "";
+
+String rol = "";
 Empresa empresa =
     Empresa(id_empresa: 0, nombre: "", direccion: "", telefono: "");
 Usuario usuario = Usuario(
@@ -45,6 +47,13 @@ String bucketProducts = "products";
 String bucketChat = "chat";
 ColorScheme temaLight = ThemeFFDE3F.lightScheme();
 ColorScheme temaDark = ThemeFFDE3F.darkScheme();
+
+String mail = "";
+String theme = "";
+bool homeScreen = false;
+TextTheme? lightTextTheme;
+TextTheme? darkTextTheme;
+
 void openNewScreen(BuildContext context, Widget screen) {
   Navigator.pushAndRemoveUntil(
     context,
@@ -73,7 +82,6 @@ Future<void> solicitarPermisoNotificaciones() async {
   PermissionStatus status = await Permission.notification.status;
 
   if (status.isDenied) {
-    // Si está denegado, solicita permiso
     await Permission.notification.request();
   }
 }
@@ -132,6 +140,24 @@ void customSuccessSnackbar(String message, BuildContext context) {
 }
 
 class Utils {
+    Future<void> refreshBusiness() async {
+    var usuario_e = await Utils().getUserEmpresa(usuario.id_usuario.toString());
+    if (usuario_e.isNotEmpty) {
+      var empresaJSON =
+          await Utils().getEmpresa(usuario_e[0]['id_empresa'].toString());
+      empresa = Empresa.fromJson(empresaJSON[0]);
+      rol = usuario_e[0]['rol'];
+      // Si existe, redirigir a la pantalla de empresa
+    } else {
+      empresa = Empresa(
+        id_empresa: 0,
+        nombre: "",
+        direccion: "",
+        telefono: "",
+      );
+      rol = "";
+    }
+  }
   Future<List<dynamic>> saveProduct(Producto producto) async {
     try {
       final response = await supabaseService.client
@@ -316,6 +342,7 @@ class Utils {
       return [];
     }
   }
+
 
   Future<List<dynamic>> getEmpresa(String idEmpresa) async {
     try {

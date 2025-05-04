@@ -92,13 +92,22 @@ class _CreatebusinessState extends State<Createbusiness> {
     ));
   }
 
-  void createBusiness() {
+  void createBusiness() async {
     if (businessKey.currentState!.validate() &&
         telefonKey.currentState!.validate()) {
       String direccionBusiness = direccion;
       String telefon = telefonController.text;
       String businessName = businessNameController.text;
 
+      var user_empresa =
+          await Utils().getUserEmpresa(usuario.id_usuario.toString());
+      if (user_empresa.isNotEmpty) {
+        await Utils().refreshBusiness();
+        customErrorSnackbar(
+            LocaleKeys.CreateBusiness_belong_to_a_business.tr(), context);
+        openNewScreen(context, Businessscreen());
+        return;
+      }
       Utils().insertInTable({
         'nombre': businessName,
         'direccion': direccionBusiness,

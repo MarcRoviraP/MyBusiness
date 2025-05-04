@@ -44,8 +44,8 @@ class _BusinessselectorscreenState extends State<Businessselectorscreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            openNewScreen(context, MainScreen());
-          },
+Utils().refreshBusiness()
+                .then((value) => openNewScreen(context, MainScreen()));          },
         ),
       ),
       body: screens[selectedIndex],

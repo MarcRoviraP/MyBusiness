@@ -14,9 +14,7 @@ import 'package:MyBusiness/Screens/BusinessSelectorScreen.dart';
 import 'package:MyBusiness/Screens/VideoWidget.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({super.key});
-
-  var em = empresa;
+  const MainScreen({super.key});
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -124,27 +122,27 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void startBusinessScreen(BuildContext context) {
+  Future<void> startBusinessScreen(BuildContext context) async {
     // Busca si existe el id de usuario en la tabla usuario_empresa
-    Utils().getUserEmpresa(usuario.id_usuario.toString()).then((value) {
-      if (value.isNotEmpty) {
-        Utils().getEmpresa(value[0]['id_empresa'].toString()).then((value) {
-          empresa = Empresa.fromJson(value[0]);
+    var value = await Utils().getUserEmpresa(usuario.id_usuario.toString());
+    if (value.isNotEmpty) {
+      var empresaJSON =
+          await Utils().getEmpresa(value[0]['id_empresa'].toString());
+      empresa = Empresa.fromJson(empresaJSON[0]);
+              rol = value[0]['rol'];
 
-          // Si existe, redirigir a la pantalla de empresa
-          openNewScreen(context, Businessscreen());
-        });
-      } else {
-        // Si no existe, redirigir a la pantalla de creación de empresa
-        openNewScreen(context, Businessselectorscreen());
-        empresa = Empresa(
-          id_empresa: 0,
-          nombre: "",
-          direccion: "",
-          telefono: "",
-        );
-      }
-    });
+      // Si existe, redirigir a la pantalla de empresa
+      openNewScreen(context, Businessscreen());
+    } else {
+      // Si no existe, redirigir a la pantalla de creación de empresa
+      openNewScreen(context, Businessselectorscreen());
+      empresa = Empresa(
+        id_empresa: 0,
+        nombre: "",
+        direccion: "",
+        telefono: "",
+      );
+    }
   }
 
   void cerrarSesion() async {

@@ -1,42 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-TextTheme createTextTheme(BuildContext context, String bodyFontString,
-    String displayFontString, bool isDarkMode) {
+TextTheme createTextTheme({
+  required BuildContext context,
+  required String bodyFontString,
+  required String displayFontString,
+  required bool isDarkMode,
+}) {
   final baseTextTheme = Theme.of(context).textTheme;
-
   final Color textColor = isDarkMode ? Colors.white : Colors.black;
 
+  TextStyle? applyFont(TextStyle? base, String font) {
+    return GoogleFonts.getFont(
+      font,
+      textStyle: base?.copyWith(
+        color: textColor,
+        inherit: true,
+      ),
+    );
+  }
+
   return TextTheme(
-    displayLarge: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.displayLarge?.copyWith(color: textColor)),
-    displayMedium: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.displayMedium?.copyWith(color: textColor)),
-    displaySmall: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.displaySmall?.copyWith(color: textColor)),
-    headlineLarge: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.headlineLarge?.copyWith(color: textColor)),
-    headlineMedium: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.headlineMedium?.copyWith(color: textColor)),
-    headlineSmall: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.headlineSmall?.copyWith(color: textColor)),
-    titleLarge: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.titleLarge?.copyWith(color: textColor)),
-    titleMedium: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.titleMedium?.copyWith(color: textColor)),
-    titleSmall: GoogleFonts.getFont(displayFontString,
-        textStyle: baseTextTheme.titleSmall?.copyWith(color: textColor)),
-    bodyLarge: GoogleFonts.getFont(bodyFontString,
-        textStyle: baseTextTheme.bodyLarge?.copyWith(color: textColor)),
-    bodyMedium: GoogleFonts.getFont(bodyFontString,
-        textStyle: baseTextTheme.bodyMedium?.copyWith(color: textColor)),
-    bodySmall: GoogleFonts.getFont(bodyFontString,
-        textStyle: baseTextTheme.bodySmall?.copyWith(color: textColor)),
-    labelLarge: GoogleFonts.getFont(bodyFontString,
-        textStyle: baseTextTheme.labelLarge?.copyWith(color: textColor)),
-    labelMedium: GoogleFonts.getFont(bodyFontString,
-        textStyle: baseTextTheme.labelMedium?.copyWith(color: textColor)),
-    labelSmall: GoogleFonts.getFont(bodyFontString,
-        textStyle: baseTextTheme.labelSmall?.copyWith(color: textColor)),
+    displayLarge: applyFont(baseTextTheme.displayLarge, displayFontString),
+    displayMedium: applyFont(baseTextTheme.displayMedium, displayFontString),
+    displaySmall: applyFont(baseTextTheme.displaySmall, displayFontString),
+    headlineLarge: applyFont(baseTextTheme.headlineLarge, displayFontString),
+    headlineMedium: applyFont(baseTextTheme.headlineMedium, displayFontString),
+    headlineSmall: applyFont(baseTextTheme.headlineSmall, displayFontString),
+    titleLarge: applyFont(baseTextTheme.titleLarge, displayFontString),
+    titleMedium: applyFont(baseTextTheme.titleMedium, displayFontString),
+    titleSmall: applyFont(baseTextTheme.titleSmall, displayFontString),
+    bodyLarge: applyFont(baseTextTheme.bodyLarge, bodyFontString),
+    bodyMedium: applyFont(baseTextTheme.bodyMedium, bodyFontString),
+    bodySmall: applyFont(baseTextTheme.bodySmall, bodyFontString),
+    labelLarge: applyFont(baseTextTheme.labelLarge, bodyFontString),
+    labelMedium: applyFont(baseTextTheme.labelMedium, bodyFontString),
+    labelSmall: applyFont(baseTextTheme.labelSmall, bodyFontString),
   );
 }

@@ -1,3 +1,4 @@
+import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Screens/BussinesChat.dart';
 import 'package:MyBusiness/Screens/EmployeesScreen.dart';
 import 'package:MyBusiness/Screens/InventoryScreen.dart';
@@ -20,34 +21,22 @@ class Businessscreen extends StatefulWidget {
 class _BusinessscreenState extends State<Businessscreen> {
   final MobileScannerController controller = MobileScannerController();
   int selectedIndex = 0;
-  List<Widget> screens = <Widget>[
-    startBusinessScreen(),
-    Inventoryscreen(),
-    Bussineschat(),
-    Invitesscreen(),
-    Employeesscreen(),
-  ];
+  List<Widget> screens = rol == "Administrador"
+      ? <Widget>[
+          startBusinessScreen(),
+          Inventoryscreen(),
+          Bussineschat(),
+          Invitesscreen(),
+          Employeesscreen(),
+        ]
+      : <Widget>[
+          startBusinessScreen(),
+          Inventoryscreen(),
+          Bussineschat(),
+        ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            openNewScreen(context, MainScreen());
-          },
-        ),
-      ),
-      body: screens[selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-        selectedIndex: selectedIndex,
-        destinations: <Widget>[
+  List<Widget> destinations = rol == "Administrador"
+      ? <Widget>[
           NavigationDestination(
             icon: Icon(Icons.home),
             label: LocaleKeys.BusinessScreen_start.tr(),
@@ -71,10 +60,49 @@ class _BusinessscreenState extends State<Businessscreen> {
             selectedIcon: Icon(Icons.people_alt),
             label: LocaleKeys.BusinessScreen_employee.tr(),
           ),
-        ],
+        ]
+      : <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            label: LocaleKeys.BusinessScreen_start.tr(),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.inventory_outlined),
+            label: LocaleKeys.BusinessScreen_inventory.tr(),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.mark_unread_chat_alt_outlined),
+            selectedIcon: Icon(Icons.mark_unread_chat_alt_sharp),
+            label: LocaleKeys.BusinessScreen_chat.tr(),
+          ),
+        ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Utils().refreshBusiness()
+                .then((value) => openNewScreen(context, MainScreen()));
+          },
+        ),
+      ),
+      body: screens[selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (value) {
+          setState(() {
+            selectedIndex = value;
+          });
+        },
+        selectedIndex: selectedIndex,
+        destinations: destinations,
       ),
     );
   }
+
+
 }
 
 class startBusinessScreen extends StatelessWidget {
