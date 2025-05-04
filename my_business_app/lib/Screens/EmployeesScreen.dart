@@ -141,7 +141,7 @@ class _EmployeesscreenState extends State<Employeesscreen> {
   }
 
   Future<void> eliminar(int id_usuario_emp) async {
-    var response = await Utils().eliminar(id_usuario_emp);
+    var response = await Utils().eliminarUsuarioEmpresa(id_usuario_emp);
     if (response.isNotEmpty) {
       setState(() {});
     }

@@ -140,7 +140,7 @@ void customSuccessSnackbar(String message, BuildContext context) {
 }
 
 class Utils {
-    Future<void> refreshBusiness() async {
+  Future<void> refreshBusiness() async {
     var usuario_e = await Utils().getUserEmpresa(usuario.id_usuario.toString());
     if (usuario_e.isNotEmpty) {
       var empresaJSON =
@@ -284,7 +284,7 @@ class Utils {
     }
   }
 
-  Future<List<dynamic>> eliminar(int user_id) async {
+  Future<List<dynamic>> eliminarUsuarioEmpresa(int user_id) async {
     try {
       final response = await supabaseService.client
           .from('usuario_empresa')
@@ -342,7 +342,6 @@ class Utils {
       return [];
     }
   }
-
 
   Future<List<dynamic>> getEmpresa(String idEmpresa) async {
     try {

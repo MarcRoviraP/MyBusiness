@@ -1,6 +1,10 @@
 {
+  "BusinessScreen_cannot_exit": "You cannot leave the business because you are the last administrator. Please assign another admin before leaving.",
   "BusinessScreen_chat": "Chat",
   "BusinessScreen_employee": "Employee",
+  "BusinessScreen_exit": "Exit",
+  "BusinessScreen_exit_business": "Exit the business",
+  "BusinessScreen_exit_business_text": "Are you sure you want to go out of business?",
   "BusinessScreen_inventory": "Inventory",
   "BusinessScreen_invitacions": "Invitations",
   "BusinessScreen_start": "Home",

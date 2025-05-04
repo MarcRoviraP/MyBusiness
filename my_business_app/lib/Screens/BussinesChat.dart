@@ -123,6 +123,8 @@ class _BussineschatState extends State<Bussineschat> {
                                           imageUrl:
                                               "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}",
                                           width: 200,
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(),
                                         ),
                                       )
                                     : const SizedBox(),

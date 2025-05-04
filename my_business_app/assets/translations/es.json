@@ -1,6 +1,10 @@
 {
+  "BusinessScreen_cannot_exit": "No puedes abandonar el negocio porque eres el último administrador. Asigna otro administrador antes de salir.",
   "BusinessScreen_chat": "Chat",
   "BusinessScreen_employee": "Empleados",
+  "BusinessScreen_exit": "Salir",
+  "BusinessScreen_exit_business": "Salir del negocio",
+  "BusinessScreen_exit_business_text": "¿Seguro que quires salirte del negocio?",
   "BusinessScreen_inventory": "Inventario",
   "BusinessScreen_invitacions": "Invitaciones",
   "BusinessScreen_start": "Inicio",

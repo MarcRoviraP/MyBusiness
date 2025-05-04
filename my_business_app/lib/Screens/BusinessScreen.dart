@@ -84,7 +84,8 @@ class _BusinessscreenState extends State<Businessscreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Utils().refreshBusiness()
+            Utils()
+                .refreshBusiness()
                 .then((value) => openNewScreen(context, MainScreen()));
           },
         ),
@@ -101,8 +102,6 @@ class _BusinessscreenState extends State<Businessscreen> {
       ),
     );
   }
-
-
 }
 
 class startBusinessScreen extends StatelessWidget {
@@ -130,7 +129,57 @@ class startBusinessScreen extends StatelessWidget {
           "ID: ${empresa.id_empresa.toString()}",
           style: TextStyle(fontSize: 20),
         ),
+        TextButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(LocaleKeys.BusinessScreen_exit_business.tr()),
+                    content:
+                        Text(LocaleKeys.BusinessScreen_exit_business_text.tr()),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(LocaleKeys.CreateProducts_cancel.tr()),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          salirEmpresa(context);
+                        },
+                        child: Text(LocaleKeys.BusinessScreen_exit.tr()),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Text(LocaleKeys.BusinessScreen_exit_business.tr())),
       ],
     );
+  }
+
+  Future<void> salirEmpresa(BuildContext context) async {
+    if (rol == "Administrador") {
+      var usersEmpresa = await Utils().getUsersEmpresa();
+      if (usersEmpresa.length > 1) {
+        List<dynamic> users = usersEmpresa.map((e) {
+          if (e["rol"] == "Administrador" &&
+              e["id_usuario"] != usuario.id_usuario) {
+            return e["nombre"];
+          }
+        }).toList();
+
+        if (users.isEmpty) {
+          customErrorSnackbar(
+              LocaleKeys.BusinessScreen_cannot_exit.tr(), context);
+          return;
+        }
+      }
+    }
+    Utils().eliminarUsuarioEmpresa(usuario.id_usuario);
+    Utils().refreshBusiness();
   }
 }
