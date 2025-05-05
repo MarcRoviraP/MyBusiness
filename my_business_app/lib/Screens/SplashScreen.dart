@@ -40,6 +40,9 @@ class _SplashscreenState extends State<Splashscreen> {
             .getEmpresa(userEmpresaList[0]['id_empresa'].toString());
         empresa = Empresa.fromJson(empresaList[0]);
       }
+      String notif = await Utils().getSharedString(shared_notifications);
+        notifications = notif == "true" || notif == "";
+      
     } catch (e) {}
 
     return mail;

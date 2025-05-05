@@ -2,6 +2,7 @@ import 'package:MyBusiness/Class/Categoria.dart';
 import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Dialog/CreateProducts.dart';
 import 'package:MyBusiness/Constants/constants.dart';
+import 'package:MyBusiness/Dialog/ShowImage.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -214,6 +215,8 @@ class cardProducts extends StatefulWidget {
 class _cardProductsState extends State<cardProducts> {
   @override
   Widget build(BuildContext context) {
+    var imageUrl =
+        "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketProducts//${widget.producto.url_img}";
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
       child: Card(
@@ -224,6 +227,15 @@ class _cardProductsState extends State<cardProducts> {
           child: Row(
             children: [
               GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ShowImage(
+                          url: imageUrl,
+                        );
+                      });
+                },
                 onLongPress: () {
                   setState(() {
                     widget.tamanyo = 150;
@@ -239,8 +251,7 @@ class _cardProductsState extends State<cardProducts> {
                     : ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: CachedNetworkImage(
-                          imageUrl:
-                              "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketProducts//${widget.producto.url_img}",
+                          imageUrl: imageUrl,
                           width: widget.tamanyo,
                           height: widget.tamanyo,
                           fit: BoxFit.cover,

@@ -108,28 +108,29 @@ class _CreatebusinessState extends State<Createbusiness> {
         openNewScreen(context, Businessscreen());
         return;
       }
-      Utils().insertInTable({
+      var value = await Utils().insertInTable({
         'nombre': businessName,
         'direccion': direccionBusiness,
         'telefono': telefon,
-      }, 'empresas').then((value) {
-        if (value.isEmpty) {
-          customErrorSnackbar(
-              LocaleKeys.CreateBusiness_business_error.tr(), context);
-        } else {
-          empresa = Empresa.fromJson(value[0]);
-          String idEmpresa = value[0]['id_empresa'].toString();
-          Utils().insertInTable({
-            'id_usuario': int.parse(usuario.id_usuario.toString()),
-            'id_empresa': int.parse(idEmpresa),
-            'rol': Administrador_empresa,
-          }, 'usuario_empresa');
+      }, 'empresas');
 
-          customSuccessSnackbar(
-              LocaleKeys.CreateBusiness_business_created.tr(), context);
-          openNewScreen(context, Businessscreen());
-        }
-      });
+      if (value.isEmpty) {
+        customErrorSnackbar(
+        LocaleKeys.CreateBusiness_business_error.tr(), context);
+      } else {
+        empresa = Empresa.fromJson(value[0]);
+        String idEmpresa = value[0]['id_empresa'].toString();
+        await Utils().insertInTable({
+          'id_usuario': int.parse(usuario.id_usuario.toString()),
+          'id_empresa': int.parse(idEmpresa),
+          'rol': Administrador_empresa,
+        }, 'usuario_empresa');
+
+        customSuccessSnackbar(
+        LocaleKeys.CreateBusiness_business_created.tr(), context);
+        rol = Administrador_empresa;
+        openNewScreen(context, Businessscreen());
+      }
     }
   }
 }

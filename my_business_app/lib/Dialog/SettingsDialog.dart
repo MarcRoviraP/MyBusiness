@@ -21,8 +21,9 @@ class Settingsdialog extends StatefulWidget {
 }
 
 class _SettingsdialogState extends State<Settingsdialog> {
-  late String eleccionTema = "";
+  late String eleccionTema = "#FFDE3F";
   late String eleccionTemaAux = "";
+  
 
   @override
   void initState() {
@@ -50,9 +51,20 @@ class _SettingsdialogState extends State<Settingsdialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: Icon(Icons.notifications),
+            leading: Icon(notifications ? Icons.notifications_active : Icons.notifications_off 
+            , color: notifications ? Colors.blue : const Color.fromARGB(255, 189, 191, 192)),
             title: Text(LocaleKeys.SettingsDialog_notifi.tr()),
-            onTap: () {},
+            onTap: () {
+              setState(() {
+
+                notifications = !notifications;
+                if (notifications) {
+                  Utils().setSharedString(shared_notifications, "true");
+                } else {
+                  Utils().setSharedString(shared_notifications, "false");
+                }
+              });
+            },
           ),
           ListTile(
             leading: Icon(Icons.color_lens),

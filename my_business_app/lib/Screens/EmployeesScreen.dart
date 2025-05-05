@@ -71,43 +71,49 @@ class _EmployeesscreenState extends State<Employeesscreen> {
                               ],
                             ),
                           ),
-                          employee.rol == "Administrador"
-                              ? TextButton(
-                                  onPressed: () {
-                                    cambiarRol(
-                                        employee.id_usuario_emp, "Usuario");
-                                  },
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: Colors.red,
+                          if (employee.id_usuario == usuario.id_usuario)
+                            const Icon(
+                              Icons.person,
+                              color: Colors.blue,
+                            )
+                          else
+                            employee.rol == "Administrador"
+                                ? TextButton(
+                                    onPressed: () {
+                                      cambiarRol(
+                                          employee.id_usuario_emp, "Usuario");
+                                    },
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Colors.red,
+                                    ),
+                                    child: Text(LocaleKeys
+                                        .EmployeesScreen_degrade.tr()),
+                                  )
+                                : Column(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          cambiarRol(employee.id_usuario_emp,
+                                              "Administrador");
+                                        },
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: Colors.green,
+                                        ),
+                                        child: Text(LocaleKeys
+                                            .EmployeesScreen_ascend.tr()),
+                                      ),
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          eliminar(employee.id_usuario_emp);
+                                        },
+                                        child: Text(LocaleKeys
+                                            .EmployeesScreen_delete.tr()),
+                                      ),
+                                    ],
                                   ),
-                                  child: Text(
-                                      LocaleKeys.EmployeesScreen_degrade.tr()),
-                                )
-                              : Column(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        cambiarRol(employee.id_usuario_emp,
-                                            "Administrador");
-                                      },
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.green,
-                                      ),
-                                      child: Text(LocaleKeys
-                                          .EmployeesScreen_ascend.tr()),
-                                    ),
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        eliminar(employee.id_usuario_emp);
-                                      },
-                                      child: Text(LocaleKeys
-                                          .EmployeesScreen_delete.tr()),
-                                    ),
-                                  ],
-                                ),
                         ],
                       ),
                     ),

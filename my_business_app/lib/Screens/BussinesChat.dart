@@ -22,6 +22,44 @@ class _BussineschatState extends State<Bussineschat> {
   List<ChatMessage> messages = [];
   TextEditingController messageController = TextEditingController();
   XFile? image;
+    Map<String, Color> colorMap = {
+    'A': Colors.red,
+    'B': Colors.orange,
+    'C': Colors.yellow,
+    'D': Colors.green,
+    'E': Colors.indigo,
+    'F': Colors.purple,
+    'G': Colors.pink,
+    'H': Colors.teal,
+    'I': Colors.brown,
+    'J': Colors.cyan,
+    'K': Colors.lime,
+    'L': Colors.amber,
+    'M': Colors.deepOrange,
+    'N': Colors.deepPurple,
+    'O': Colors.pinkAccent,
+    'P': Colors.blueGrey,
+    'Q': Colors.greenAccent,
+    'R': Colors.redAccent,
+    'S': Colors.orangeAccent,
+    'T': Colors.yellowAccent,
+    'U': Colors.greenAccent,
+    'V': Colors.purpleAccent,
+    'W': Colors.tealAccent,
+    'X': Colors.limeAccent,
+    'Y': Colors.pinkAccent,
+    'Z': Colors.brown,
+    '0': Colors.grey,
+    '1': Colors.black,
+    '2': Colors.green,
+    '3': Colors.red,
+    '4': Colors.yellow,
+    '5': Colors.purple,
+    '6': Colors.orange,
+    '7': Colors.brown,
+    '8': Colors.cyan,
+    '9': Colors.lime
+  };
   @override
   void initState() {
     super.initState();
@@ -104,10 +142,11 @@ class _BussineschatState extends State<Bussineschat> {
                                     color: message.usuario?.id_usuario ==
                                             usuario.id_usuario
                                         ? Colors.white
-                                        : Colors.black87,
+                                        : colorMap[
+                                            message.usuario?.nombre[0].toUpperCase()] ??
+                                            Colors.black,
                                   ),
                                 ),
-                                const SizedBox(height: 5),
                                 message.imagen_url != ""
                                     ? GestureDetector(
                                         onTap: () {
@@ -137,7 +176,6 @@ class _BussineschatState extends State<Bussineschat> {
                                         : Colors.black87,
                                   ),
                                 ),
-                                const SizedBox(height: 5),
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: Text(

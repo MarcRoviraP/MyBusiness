@@ -25,6 +25,7 @@ String shared_mail = "mail";
 String shared_userid = "user_id";
 String shared_empresa_id = "empresa_id";
 String shared_theme = "tema";
+String shared_notifications = "notificaciones";
 String Pendiente = "Pendiente";
 String Aceptada = "Aceptada";
 String Rechazada = "Rechazada";
@@ -53,6 +54,8 @@ String theme = "";
 bool homeScreen = false;
 TextTheme? lightTextTheme;
 TextTheme? darkTextTheme;
+
+bool notifications = false;
 
 void openNewScreen(BuildContext context, Widget screen) {
   Navigator.pushAndRemoveUntil(
@@ -96,6 +99,7 @@ Future<void> mostrarNotificacion({
   Importance importancia = Importance.high,
   Priority prioridad = Priority.high,
 }) async {
+  if (!notifications)return;
   final androidDetails = AndroidNotificationDetails(
     canalId,
     canalNombre,
@@ -296,7 +300,30 @@ class Utils {
       return [];
     }
   }
-
+  Future<List<dynamic>> eliminarTodaEmpresa() async {
+    try {
+      final response = await supabaseService.client
+          .from('usuario_empresa')
+          .delete()
+          .filter('id_empresa', 'eq', empresa.id_empresa)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+Future<List<dynamic>> eliminarUsuarioEmpresaPorUserID(int user_id) async {
+    try {
+      final response = await supabaseService.client
+          .from('usuario_empresa')
+          .delete()
+          .filter('id_usuario', 'eq', user_id)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
   Future<List<dynamic>> updateInvitacionState(
       int user_id, String estado) async {
     try {

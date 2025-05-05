@@ -1,6 +1,9 @@
 {
+  "BusinessScreen_accept": "Accept",
+  "BusinessScreen_cancel": "Cancel",
   "BusinessScreen_cannot_exit": "You cannot leave the business because you are the last administrator. Please assign another admin before leaving.",
   "BusinessScreen_chat": "Chat",
+  "BusinessScreen_delete_business": "Delete business",
   "BusinessScreen_employee": "Employee",
   "BusinessScreen_exit": "Exit",
   "BusinessScreen_exit_business": "Exit the business",
@@ -8,6 +11,7 @@
   "BusinessScreen_inventory": "Inventory",
   "BusinessScreen_invitacions": "Invitations",
   "BusinessScreen_start": "Home",
+  "BusinessScreen_want_delete_business": "Do you want delete the business?",
   "BussinesChat_open_camera": "Open camera",
   "BussinesChat_select_from_gallery": "Select from gallery",
   "BussinesChat_type_message": "Type a message",

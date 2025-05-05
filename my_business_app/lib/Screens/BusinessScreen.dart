@@ -90,7 +90,39 @@ class _BusinessscreenState extends State<Businessscreen> {
           },
         ),
       ),
-      body: screens[selectedIndex],
+      body: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        // Curva de entrada y salida de la animación
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        transitionBuilder: (child, animation) {
+          final offsetAnimation = Tween<Offset>(
+            // Creamos un desplazamiento de -1.0 en el eje x
+            begin: const Offset(-1.0, 0.0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOutCubic,
+          ));
+
+          // Combina la animación de desplazamiento con la animación de opacidad para crear un efecto de deslizamiento y desvanecimiento
+          return SlideTransition(
+            position: offsetAnimation,
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+        child: Container(
+          // Al cambiar el valor de la key, indicamos a la animación que debe reiniciarse
+          key: ValueKey(selectedIndex),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: screens[selectedIndex],
+          ),
+        ),
+      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (value) {
           setState(() {
@@ -147,10 +179,22 @@ class startBusinessScreen extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          salirEmpresa(context);
+                          salirEmpresa(context).then((value) {
+                            Navigator.of(context).pop();
+                            if (value) {
+                              openNewScreen(context, MainScreen());
+                            } else {
+                              customErrorSnackbar(
+                                  LocaleKeys.BusinessScreen_cannot_exit.tr(),
+                                  context);
+                            }
+                          });
                         },
-                        child: Text(LocaleKeys.BusinessScreen_exit.tr()),
-                      ),
+                        child: Text(
+                          LocaleKeys.BusinessScreen_exit.tr(),
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      )
                     ],
                   );
                 },
@@ -161,25 +205,53 @@ class startBusinessScreen extends StatelessWidget {
     );
   }
 
-  Future<void> salirEmpresa(BuildContext context) async {
+  Future<bool> salirEmpresa(BuildContext context) async {
+    bool masAdministradores = false;
     if (rol == "Administrador") {
       var usersEmpresa = await Utils().getUsersEmpresa();
-      if (usersEmpresa.length > 1) {
-        List<dynamic> users = usersEmpresa.map((e) {
-          if (e["rol"] == "Administrador" &&
-              e["id_usuario"] != usuario.id_usuario) {
-            return e["nombre"];
-          }
-        }).toList();
-
-        if (users.isEmpty) {
-          customErrorSnackbar(
-              LocaleKeys.BusinessScreen_cannot_exit.tr(), context);
-          return;
+      usersEmpresa.map((e) {
+        if (e["rol"] == "Administrador" &&
+            e["id_usuario"] != usuario.id_usuario) {
+          masAdministradores = true;
         }
+      }).toList();
+
+      if (!masAdministradores) {
+        bool? response = await showDialog<bool?>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(LocaleKeys.BusinessScreen_delete_business.tr()),
+                content:
+                    Text(LocaleKeys.BusinessScreen_want_delete_business.tr()),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    child: Text(LocaleKeys.BusinessScreen_cancel.tr()),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                    child: Text(LocaleKeys.BusinessScreen_accept.tr()),
+                  ),
+                ],
+              );
+            });
+        if (response != null) {
+          if (response) {
+            await Utils().eliminarTodaEmpresa();
+            await Utils().refreshBusiness();
+            return true;
+          }
+        }
+        return false;
       }
     }
-    Utils().eliminarUsuarioEmpresa(usuario.id_usuario);
-    Utils().refreshBusiness();
+    await Utils().eliminarUsuarioEmpresaPorUserID(usuario.id_usuario);
+    await Utils().refreshBusiness();
+    return true;
   }
 }

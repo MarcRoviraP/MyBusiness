@@ -3,8 +3,11 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
+  static const BusinessScreen_accept = 'BusinessScreen_accept';
+  static const BusinessScreen_cancel = 'BusinessScreen_cancel';
   static const BusinessScreen_cannot_exit = 'BusinessScreen_cannot_exit';
   static const BusinessScreen_chat = 'BusinessScreen_chat';
+  static const BusinessScreen_delete_business = 'BusinessScreen_delete_business';
   static const BusinessScreen_employee = 'BusinessScreen_employee';
   static const BusinessScreen_exit = 'BusinessScreen_exit';
   static const BusinessScreen_exit_business = 'BusinessScreen_exit_business';
@@ -12,6 +15,7 @@ abstract class  LocaleKeys {
   static const BusinessScreen_inventory = 'BusinessScreen_inventory';
   static const BusinessScreen_invitacions = 'BusinessScreen_invitacions';
   static const BusinessScreen_start = 'BusinessScreen_start';
+  static const BusinessScreen_want_delete_business = 'BusinessScreen_want_delete_business';
   static const BussinesChat_open_camera = 'BussinesChat_open_camera';
   static const BussinesChat_select_from_gallery = 'BussinesChat_select_from_gallery';
   static const BussinesChat_type_message = 'BussinesChat_type_message';
