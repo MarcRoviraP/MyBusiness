@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS Empresas (
     id_empresa SERIAL PRIMARY KEY,
     nombre VARCHAR(255) UNIQUE NOT NULL,
     direccion VARCHAR(255),
-    telefono VARCHAR(50)
+    telefono VARCHAR(50),
+    descripcion TEXT,
+    url_img VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Usuario_Empresa (
@@ -44,15 +46,8 @@ CREATE TABLE IF NOT EXISTS Inventario (
 CREATE TABLE IF NOT EXISTS Inventario_Producto (
     id_inventario_producto SERIAL PRIMARY KEY,
     id_inventario INT REFERENCES Inventario(id_inventario),
-    id_producto INT REFERENCES Productos(id_producto),
+    id_producto INT REFERENCES Productos(id_producto)  ON DELETE CASCADE,
     cantidad INT NOT NULL DEFAULT 0
-);
-
-CREATE TABLE IF NOT EXISTS Historial_Inventario (
-    id_historial SERIAL PRIMARY KEY,
-    id_inventario INT REFERENCES Inventario(id_inventario),
-    id_usuario INT REFERENCES Usuarios(id_usuario),
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS Chat_Empresa (
@@ -71,3 +66,15 @@ CREATE TABLE IF NOT EXISTS Invitacion_Empresa (
     estado VARCHAR(20) CHECK (estado IN ('Pendiente', 'Aceptada', 'Rechazada')) NOT NULL,
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+alter policy "Chat Policy"
+on "public"."chat_empresa"
+to public
+using (
+ true
+);
+
+alter policy "Enable update for users based on email"
+on "public"."invitacion_empresa"
+to public
+using (true);

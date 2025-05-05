@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:MyBusiness/Class/Categoria.dart';
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
@@ -11,6 +12,7 @@ import 'package:crypto/crypto.dart';
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,7 +38,7 @@ String direccion = "";
 
 String rol = "";
 Empresa empresa =
-    Empresa(id_empresa: 0, nombre: "", direccion: "", telefono: "");
+    Empresa(id_empresa: 0, nombre: "", direccion: "", telefono: "", descripcion: "", url_img: "");
 Usuario usuario = Usuario(
   id_usuario: 0,
   nombre: "",
@@ -46,6 +48,7 @@ Usuario usuario = Usuario(
 
 String bucketProducts = "products";
 String bucketChat = "chat";
+String bucketBusiness = "business";
 ColorScheme temaLight = ThemeFFDE3F.lightScheme();
 ColorScheme temaDark = ThemeFFDE3F.darkScheme();
 
@@ -56,7 +59,16 @@ TextTheme? lightTextTheme;
 TextTheme? darkTextTheme;
 
 bool notifications = false;
+Future<XFile?> takePhoto() async {
+    XFile? picture = await ImagePicker().pickImage(source: ImageSource.camera);
 
+    return picture;
+  }
+
+  Future<XFile?> takePhotoGallery() async {
+    XFile? picture = await ImagePicker().pickImage(source: ImageSource.gallery);
+    return picture;
+  }
 void openNewScreen(BuildContext context, Widget screen) {
   Navigator.pushAndRemoveUntil(
     context,
@@ -99,7 +111,7 @@ Future<void> mostrarNotificacion({
   Importance importancia = Importance.high,
   Priority prioridad = Priority.high,
 }) async {
-  if (!notifications)return;
+  if (!notifications) return;
   final androidDetails = AndroidNotificationDetails(
     canalId,
     canalNombre,
@@ -158,10 +170,26 @@ class Utils {
         nombre: "",
         direccion: "",
         telefono: "",
+        descripcion: "",
+        url_img: "",
       );
       rol = "";
     }
   }
+  
+  Future<List<dynamic>> saveBusiness(dynamic json) async {
+    try {
+      final response = await supabaseService.client
+          .from('empresas')
+          .update(json)
+          .filter('id_empresa', 'eq', empresa.id_empresa)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<dynamic>> saveProduct(Producto producto) async {
     try {
       final response = await supabaseService.client
@@ -288,6 +316,32 @@ class Utils {
     }
   }
 
+  Future<List<dynamic>> deleteProduct(Producto producto) async {
+    try {
+      final response = await supabaseService.client
+          .from('productos')
+          .delete()
+          .filter('id_producto', 'eq', producto.id_producto)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> deleteCategory(String id_categoria) async {
+    try {
+      final response = await supabaseService.client
+          .from('categorias')
+          .delete()
+          .filter('id_categoria', 'eq', id_categoria)
+          .select('*');
+      return response;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<dynamic>> eliminarUsuarioEmpresa(int user_id) async {
     try {
       final response = await supabaseService.client
@@ -300,6 +354,7 @@ class Utils {
       return [];
     }
   }
+
   Future<List<dynamic>> eliminarTodaEmpresa() async {
     try {
       final response = await supabaseService.client
@@ -312,7 +367,8 @@ class Utils {
       return [];
     }
   }
-Future<List<dynamic>> eliminarUsuarioEmpresaPorUserID(int user_id) async {
+
+  Future<List<dynamic>> eliminarUsuarioEmpresaPorUserID(int user_id) async {
     try {
       final response = await supabaseService.client
           .from('usuario_empresa')
@@ -324,6 +380,7 @@ Future<List<dynamic>> eliminarUsuarioEmpresaPorUserID(int user_id) async {
       return [];
     }
   }
+
   Future<List<dynamic>> updateInvitacionState(
       int user_id, String estado) async {
     try {

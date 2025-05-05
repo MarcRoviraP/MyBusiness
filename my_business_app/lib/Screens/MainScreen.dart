@@ -129,7 +129,7 @@ class _MainScreenState extends State<MainScreen> {
       var empresaJSON =
           await Utils().getEmpresa(value[0]['id_empresa'].toString());
       empresa = Empresa.fromJson(empresaJSON[0]);
-              rol = value[0]['rol'];
+      rol = value[0]['rol'];
 
       // Si existe, redirigir a la pantalla de empresa
       openNewScreen(context, Businessscreen());
@@ -141,6 +141,8 @@ class _MainScreenState extends State<MainScreen> {
         nombre: "",
         direccion: "",
         telefono: "",
+        descripcion: "",
+        url_img: "",
       );
     }
   }
@@ -154,6 +156,8 @@ class _MainScreenState extends State<MainScreen> {
       nombre: "",
       direccion: "",
       telefono: "",
+      descripcion: "",
+      url_img: "",
     );
     usuario = Usuario(
       id_usuario: 0,

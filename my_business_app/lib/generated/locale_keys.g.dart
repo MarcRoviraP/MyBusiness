@@ -8,12 +8,15 @@ abstract class  LocaleKeys {
   static const BusinessScreen_cannot_exit = 'BusinessScreen_cannot_exit';
   static const BusinessScreen_chat = 'BusinessScreen_chat';
   static const BusinessScreen_delete_business = 'BusinessScreen_delete_business';
+  static const BusinessScreen_edit = 'BusinessScreen_edit';
+  static const BusinessScreen_edit_business = 'BusinessScreen_edit_business';
   static const BusinessScreen_employee = 'BusinessScreen_employee';
   static const BusinessScreen_exit = 'BusinessScreen_exit';
   static const BusinessScreen_exit_business = 'BusinessScreen_exit_business';
   static const BusinessScreen_exit_business_text = 'BusinessScreen_exit_business_text';
   static const BusinessScreen_inventory = 'BusinessScreen_inventory';
   static const BusinessScreen_invitacions = 'BusinessScreen_invitacions';
+  static const BusinessScreen_join = 'BusinessScreen_join';
   static const BusinessScreen_start = 'BusinessScreen_start';
   static const BusinessScreen_want_delete_business = 'BusinessScreen_want_delete_business';
   static const BussinesChat_open_camera = 'BussinesChat_open_camera';
@@ -23,6 +26,7 @@ abstract class  LocaleKeys {
   static const CreateBusiness_business_created = 'CreateBusiness_business_created';
   static const CreateBusiness_business_error = 'CreateBusiness_business_error';
   static const CreateBusiness_business_name = 'CreateBusiness_business_name';
+  static const CreateBusiness_description = 'CreateBusiness_description';
   static const CreateBusiness_phone = 'CreateBusiness_phone';
   static const CreateProducts_add = 'CreateProducts_add';
   static const CreateProducts_add_product = 'CreateProducts_add_product';
@@ -35,6 +39,8 @@ abstract class  LocaleKeys {
   static const CreateProducts_price = 'CreateProducts_price';
   static const CreateProducts_succes = 'CreateProducts_succes';
   static const CreateProducts_too_long = 'CreateProducts_too_long';
+  static const EditBusinessDialog_business_name = 'EditBusinessDialog_business_name';
+  static const EditBusinessDialog_description = 'EditBusinessDialog_description';
   static const EmployeesScreen_ascend = 'EmployeesScreen_ascend';
   static const EmployeesScreen_degrade = 'EmployeesScreen_degrade';
   static const EmployeesScreen_delete = 'EmployeesScreen_delete';

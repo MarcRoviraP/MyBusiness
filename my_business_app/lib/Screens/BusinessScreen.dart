@@ -1,13 +1,16 @@
-import 'package:MyBusiness/Class/Empresa.dart';
+import 'package:MyBusiness/Dialog/EditBusinessDialog.dart';
+import 'package:MyBusiness/Dialog/ShowImage.dart';
 import 'package:MyBusiness/Screens/BussinesChat.dart';
 import 'package:MyBusiness/Screens/EmployeesScreen.dart';
 import 'package:MyBusiness/Screens/InventoryScreen.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/InvitesScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -21,6 +24,7 @@ class Businessscreen extends StatefulWidget {
 class _BusinessscreenState extends State<Businessscreen> {
   final MobileScannerController controller = MobileScannerController();
   int selectedIndex = 0;
+
   List<Widget> screens = rol == "Administrador"
       ? <Widget>[
           startBusinessScreen(),
@@ -136,72 +140,153 @@ class _BusinessscreenState extends State<Businessscreen> {
   }
 }
 
-class startBusinessScreen extends StatelessWidget {
-  const startBusinessScreen({
-    super.key,
-  });
+class startBusinessScreen extends StatefulWidget {
+  const startBusinessScreen({super.key});
+
+  @override
+  State<startBusinessScreen> createState() => _startBusinessScreenState();
+}
+
+class _startBusinessScreenState extends State<startBusinessScreen> {
+  XFile? picture;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          empresa.nombre,
-          style: TextStyle(fontSize: 30),
-        ),
-        Center(
-          child: QrImageView(
-            data: empresa.id_empresa.toString(),
-            version: QrVersions.auto,
-            size: 200.0,
-            backgroundColor: Colors.white,
-          ),
-        ),
-        Text(
-          "ID: ${empresa.id_empresa.toString()}",
-          style: TextStyle(fontSize: 20),
-        ),
-        TextButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text(LocaleKeys.BusinessScreen_exit_business.tr()),
-                    content:
-                        Text(LocaleKeys.BusinessScreen_exit_business_text.tr()),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            rol == "Administrador"
+                ? TextButton(
+                    onPressed: () {
+                      Future<bool?> response = showDialog<bool?>(
+                        context: context,
+                        builder: (context) {
+                          return Editbusinessdialog();
                         },
-                        child: Text(LocaleKeys.CreateProducts_cancel.tr()),
+                      );
+                      response.then((value) {
+                        if (value != null) {
+                          if (value) {
+                            Utils().refreshBusiness().then((value) {
+                              setState(() {});
+                            });
+                          }
+                        }
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(Icons.edit),
+                        Text(LocaleKeys.BusinessScreen_edit_business.tr())
+                      ],
+                    ))
+                : SizedBox(),
+            Text(
+              empresa.nombre.toUpperCase(),
+              style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            empresa.url_img != ""
+                ? GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) => ShowImage(
+                            url:
+                                "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketBusiness//${empresa.url_img}"),
+                      );
+                    },
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketBusiness/${empresa.url_img}",
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          salirEmpresa(context).then((value) {
-                            Navigator.of(context).pop();
-                            if (value) {
-                              openNewScreen(context, MainScreen());
-                            } else {
-                              customErrorSnackbar(
-                                  LocaleKeys.BusinessScreen_cannot_exit.tr(),
-                                  context);
-                            }
-                          });
-                        },
-                        child: Text(
-                          LocaleKeys.BusinessScreen_exit.tr(),
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      )
-                    ],
+                    ))
+                : const SizedBox(),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              empresa.descripcion,
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              LocaleKeys.BusinessScreen_join.tr(),
+              style: TextStyle(fontSize: 30),
+            ),
+            Center(
+              child: QrImageView(
+                data: empresa.id_empresa.toString(),
+                version: QrVersions.auto,
+                size: 200.0,
+                backgroundColor: Colors.white,
+              ),
+            ),
+            Text(
+              "ID: ${empresa.id_empresa.toString()}",
+              style: TextStyle(fontSize: 20),
+            ),
+            TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title:
+                            Text(LocaleKeys.BusinessScreen_exit_business.tr()),
+                        content: Text(
+                            LocaleKeys.BusinessScreen_exit_business_text.tr()),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(LocaleKeys.CreateProducts_cancel.tr()),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              salirEmpresa(context).then((value) {
+                                Navigator.of(context).pop();
+                                if (value) {
+                                  openNewScreen(context, MainScreen());
+                                } else {
+                                  customErrorSnackbar(
+                                      LocaleKeys.BusinessScreen_cannot_exit
+                                          .tr(),
+                                      context);
+                                }
+                              });
+                            },
+                            child: Text(
+                              LocaleKeys.BusinessScreen_exit.tr(),
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          )
+                        ],
+                      );
+                    },
                   );
                 },
-              );
-            },
-            child: Text(LocaleKeys.BusinessScreen_exit_business.tr())),
-      ],
+                child: Text(LocaleKeys.BusinessScreen_exit_business.tr())),
+          ],
+        ),
+      ),
     );
   }
 
@@ -253,5 +338,16 @@ class startBusinessScreen extends StatelessWidget {
     await Utils().eliminarUsuarioEmpresaPorUserID(usuario.id_usuario);
     await Utils().refreshBusiness();
     return true;
+  }
+
+  Future<XFile?> takePhoto() async {
+    XFile? picture = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    return picture;
+  }
+
+  Future<XFile?> takePhotoGallery() async {
+    XFile? picture = await ImagePicker().pickImage(source: ImageSource.gallery);
+    return picture;
   }
 }

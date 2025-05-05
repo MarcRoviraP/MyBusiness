@@ -80,6 +80,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         child: cardProducts(
                           producto: producto,
                           onCantidadChanged: (nuevaCantidad) {
+                            if (nuevaCantidad < 0) {
+                              Utils().deleteCategory(currentCategory).then((_) {
+                                setState(() {
+                                  widget.listaProductos.removeAt(index);
+                                  widget.listaProductosAux.removeAt(index);
+                                });
+                              });
+                            }
                             producto.cantidad = nuevaCantidad;
                             widget.listaProductos[index] = producto;
                           },
@@ -228,6 +236,7 @@ class _cardProductsState extends State<cardProducts> {
             children: [
               GestureDetector(
                 onTap: () {
+                  if (widget.producto.url_img.isEmpty) return;
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -282,12 +291,30 @@ class _cardProductsState extends State<cardProducts> {
                           fontWeight: FontWeight.w500, color: Colors.green),
                     ),
                     SizedBox(height: 4),
-                    NumberSpinner(
-                        widget: widget,
-                        cantidad: widget.producto.cantidad,
-                        onCantidadChanged: (nuevaCantidad) {
-                          widget.onCantidadChanged(nuevaCantidad);
-                        }),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          NumberSpinner(
+                              widget: widget,
+                              cantidad: widget.producto.cantidad,
+                              onCantidadChanged: (nuevaCantidad) {
+                                widget.onCantidadChanged(nuevaCantidad);
+                              }),
+                          SizedBox(width: 60),
+                          IconButton(
+                              icon: Icon(Icons.delete),
+                              color: Colors.red,
+                              onPressed: () {
+                                deleteProduct().then((_) {
+                                  setState(() {
+                                    widget.onCantidadChanged(-1);
+                                  });
+                                });
+                              }),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -296,6 +323,10 @@ class _cardProductsState extends State<cardProducts> {
         ),
       ),
     );
+  }
+
+  Future<void> deleteProduct() async {
+    await Utils().deleteProduct(widget.producto);
   }
 }
 
