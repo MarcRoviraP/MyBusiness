@@ -189,6 +189,7 @@ class _RegisterState extends State<Register> {
                         register();
                       },
                       style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50),
                         padding:
                             EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                         shape: RoundedRectangleBorder(
@@ -206,6 +207,7 @@ class _RegisterState extends State<Register> {
                         backToLogin();
                       },
                       style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50),
                         padding:
                             EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                         shape: RoundedRectangleBorder(
