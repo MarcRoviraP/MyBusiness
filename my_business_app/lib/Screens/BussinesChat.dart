@@ -22,7 +22,7 @@ class _BussineschatState extends State<Bussineschat> {
   List<ChatMessage> messages = [];
   TextEditingController messageController = TextEditingController();
   XFile? image;
-    Map<String, Color> colorMap = {
+  Map<String, Color> colorMap = {
     'A': Colors.red,
     'B': Colors.orange,
     'C': Colors.yellow,
@@ -75,7 +75,12 @@ class _BussineschatState extends State<Bussineschat> {
             event: PostgresChangeEvent.all,
             table: 'chat_empresa',
             callback: (PostgresChangePayload payload) {
-              setState(() {});
+              if (payload.newRecord.isNotEmpty) {
+                ChatMessage message = ChatMessage.fromJson(payload.newRecord);
+                if (message.id_empresa == empresa.id_empresa) {
+                  setState(() {});
+                }
+              }
             })
         .subscribe();
   }
@@ -143,8 +148,8 @@ class _BussineschatState extends State<Bussineschat> {
                                     color: message.usuario?.id_usuario ==
                                             usuario.id_usuario
                                         ? Colors.white
-                                        : colorMap[
-                                            message.usuario?.nombre[0].toUpperCase()] ??
+                                        : colorMap[message.usuario?.nombre[0]
+                                                .toUpperCase()] ??
                                             Colors.black,
                                   ),
                                 ),

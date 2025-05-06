@@ -163,6 +163,7 @@ class _CreatebusinessState extends State<Createbusiness> {
         // Guarda la imagen en el servidor
         name =
             "${DateTime.now().millisecondsSinceEpoch}.png";
+        await uploadImage(File(picture!.path), name,bucketBusiness);
       }
 
       var user_empresa =
@@ -186,7 +187,6 @@ class _CreatebusinessState extends State<Createbusiness> {
         customErrorSnackbar(
             LocaleKeys.CreateBusiness_business_error.tr(), context);
       } else {
-        await uploadImage(File(picture!.path), name,bucketBusiness);
         empresa = Empresa.fromJson(value[0]);
         String idEmpresa = value[0]['id_empresa'].toString();
         await Utils().insertInTable({

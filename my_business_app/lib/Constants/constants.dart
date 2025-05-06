@@ -195,7 +195,7 @@ class Utils {
       final response = await supabaseService.client
           .from('inventario_producto')
           .update({
-            "cantidad": producto.cantidad,
+            "cantidad": producto.inventario_producto!.cantidad,
           })
           .filter('id_producto', 'eq', producto.id_producto)
           .select('*');
@@ -278,7 +278,7 @@ class Utils {
     try {
       final response = await supabaseService.client
           .from('productos')
-          .select('*, inventario_producto(cantidad)')
+          .select('*, inventario_producto:inventario_producto(*)')
           .eq('id_empresa', empresa.id_empresa)
           .eq('id_categoria', category)
           .order('nombre', ascending: true);
@@ -292,7 +292,7 @@ class Utils {
     try {
       final response = await supabaseService.client
           .from('productos')
-          .select('*, inventario_producto(cantidad)')
+          .select('*, inventario_producto:inventario_producto(*)')
           .eq('id_empresa', empresa.id_empresa)
           .order('nombre', ascending: true);
       return response;

@@ -1,4 +1,6 @@
+import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
 import 'package:MyBusiness/Class/Categoria.dart';
+import 'package:MyBusiness/Class/Inventario_producto.dart';
 import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Dialog/CreateProducts.dart';
 import 'package:MyBusiness/Constants/constants.dart';
@@ -9,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductsScreen extends StatefulWidget {
   ProductsScreen({super.key});
@@ -22,6 +25,26 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   String currentCategory = "";
+  ValueNotifier<bool> hayCambiosNotifier = ValueNotifier(false);
+  @override
+  void initState() {
+    super.initState();
+    // Se suscribe a los cambios en la tabla 'inventario_producto' y actualiza el estado con cada cambio de la base de datos
+    supabaseService.client
+        .from('inventario_producto')
+        .stream(primaryKey: ['id_inventario_producto']);
+
+    supabaseService.client
+        .channel('inventario_producto')
+        .onPostgresChanges(
+            event: PostgresChangeEvent.all,
+            table: 'inventario_producto',
+            callback: (PostgresChangePayload payload) {
+              comprobarCambios(payload);
+            })
+        .subscribe();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -88,7 +111,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 });
                               });
                             }
-                            producto.cantidad = nuevaCantidad;
+                            producto.inventario_producto!.cantidad =
+                                nuevaCantidad;
                             widget.listaProductos[index] = producto;
                           },
                         ),
@@ -101,6 +125,24 @@ class _ProductsScreenState extends State<ProductsScreen> {
             floatingActionButton: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                ValueListenableBuilder<bool>(
+                  valueListenable: hayCambiosNotifier,
+                  builder: (context, value, child) {
+                    if (!value) return SizedBox();
+                    return FloatingActionButton(
+                      heroTag: "refresh",
+                      onPressed: () {
+                        hayCambiosNotifier.value = false;
+                        loadInfo();
+                        setState(() {});
+                      },
+                      child: Icon(Icons.refresh),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 FloatingActionButton(
                   hoverColor: Theme.of(context).primaryColor,
                   heroTag: "save",
@@ -121,8 +163,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         url_img: e.url_img,
                         id_categoria: e.id_categoria,
                         id_empresa: e.id_empresa,
+                        inventario_producto: e.inventario_producto,
                       );
-                      producto.cantidad = e.cantidad;
                       return producto;
                     }).toList();
                     saveProducts();
@@ -180,7 +222,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
     var value2 = await Utils().getProductsFromCategory(currentCategory);
     widget.listaProductos = value2.map((e) {
       Producto producto = Producto.fromJson(e);
-      producto.cantidad = e["inventario_producto"][0]["cantidad"];
       return producto;
     }).toList();
     widget.listaProductosAux = widget.listaProductos.map((e) {
@@ -192,17 +233,41 @@ class _ProductsScreenState extends State<ProductsScreen> {
         url_img: e.url_img,
         id_categoria: e.id_categoria,
         id_empresa: e.id_empresa,
+        inventario_producto: Inventario_producto(
+          id_inventario_producto: e.inventario_producto!.id_inventario_producto,
+          id_inventario: e.inventario_producto!.id_inventario,
+          id_producto: e.inventario_producto!.id_producto,
+          cantidad: e.inventario_producto!.cantidad,
+        ),
       );
-      producto.cantidad = e.cantidad;
       return producto;
     }).toList();
+  }
+
+  void comprobarCambios(PostgresChangePayload payload) {
+    if (hayCambiosNotifier.value) return;
+
+    String id = "";
+    if (payload.newRecord.isNotEmpty) {
+      id = payload.newRecord["id_inventario_producto"].toString();
+    } else if (payload.oldRecord.isNotEmpty) {
+      id = payload.oldRecord["id_inventario_producto"].toString();
+    }
+
+    for (Producto product in widget.listaProductos) {
+      if (product.id_producto.toString() == id) {
+        hayCambiosNotifier.value = true;
+        break;
+      }
+    }
   }
 }
 
 bool compararListasProductos(
     List<Producto> listaProductos, List<Producto> listaProductosAux) {
   for (int index = 0; index < listaProductos.length; index += 1) {
-    if (listaProductos[index].cantidad != listaProductosAux[index].cantidad) {
+    if (listaProductos[index].inventario_producto!.cantidad !=
+        listaProductosAux[index].inventario_producto!.cantidad) {
       return false;
     }
   }
@@ -297,7 +362,8 @@ class _cardProductsState extends State<cardProducts> {
                         children: [
                           NumberSpinner(
                               widget: widget,
-                              cantidad: widget.producto.cantidad,
+                              cantidad:
+                                  widget.producto.inventario_producto!.cantidad,
                               onCantidadChanged: (nuevaCantidad) {
                                 widget.onCantidadChanged(nuevaCantidad);
                               }),
@@ -395,7 +461,7 @@ class _NumberSpinnerState extends State<NumberSpinner> {
                 style: TextStyle(fontSize: 16),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  isCollapsed: true, // <== reduce padding interno
+                  isCollapsed: true,
                   contentPadding: EdgeInsets.zero,
                 ),
                 onChanged: (value) {

@@ -178,26 +178,98 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class Inicio extends StatelessWidget {
-  const Inicio({
-    super.key,
-  });
+  const Inicio({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            Center(
-              child: Text("${('bienvenida').tr()}\nMy Business",
-                  textAlign: TextAlign.center, style: TextStyle(fontSize: 50)),
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  'bienvenida'.tr(),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: 20,
+                    color: theme.colorScheme.secondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'MY BUSINESS',
+                  style: theme.textTheme.headlineLarge?.copyWith(
+                    fontSize: 42,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Video(
+                          url: 'https://www.youtube.com/watch?v=-pWSQYpkkjk'),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    startBusinessScreen(context);
+                  },
+                  icon: const Icon(Icons.arrow_forward_ios),
+                  label: Text(LocaleKeys.MainScreen_start.tr()),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                )
+              ],
             ),
-            Video(url: 'https://www.youtube.com/watch?v=-pWSQYpkkjk'),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> startBusinessScreen(BuildContext context) async {
+    // Busca si existe el id de usuario en la tabla usuario_empresa
+    var value = await Utils().getUserEmpresa(usuario.id_usuario.toString());
+    if (value.isNotEmpty) {
+      var empresaJSON =
+          await Utils().getEmpresa(value[0]['id_empresa'].toString());
+      empresa = Empresa.fromJson(empresaJSON[0]);
+      rol = value[0]['rol'];
+
+      // Si existe, redirigir a la pantalla de empresa
+      openNewScreen(context, Businessscreen());
+    } else {
+      // Si no existe, redirigir a la pantalla de creación de empresa
+      openNewScreen(context, Businessselectorscreen());
+      empresa = Empresa(
+        id_empresa: 0,
+        nombre: "",
+        direccion: "",
+        telefono: "",
+        descripcion: "",
+        url_img: "",
+      );
+    }
   }
 }

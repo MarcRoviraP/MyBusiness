@@ -1,3 +1,5 @@
+import 'package:MyBusiness/Class/Inventario_producto.dart';
+
 class Producto {
   int id_producto;
   String nombre;
@@ -6,8 +8,7 @@ class Producto {
   String url_img;
   int id_empresa;
   int id_categoria;
-  int cantidad = 0;
-
+  Inventario_producto ? inventario_producto;
   Producto({
     required this.id_producto,
     required this.nombre,
@@ -16,6 +17,7 @@ class Producto {
     required this.url_img,
     required this.id_empresa,
     required this.id_categoria,
+    this.inventario_producto,
   });
 
   factory Producto.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,9 @@ class Producto {
       url_img: json['url_img'] ?? '',
       id_empresa: json['id_empresa'] ?? 0,
       id_categoria: json['id_categoria'] ?? 0,
+      inventario_producto: json['inventario_producto'] != null
+          ? Inventario_producto.fromJson(json['inventario_producto'][0])
+          : null,
     );
   }
 }

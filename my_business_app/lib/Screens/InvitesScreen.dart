@@ -30,7 +30,12 @@ class _InvitesscreenState extends State<Invitesscreen> {
             event: PostgresChangeEvent.all,
             table: 'invitacion_empresa',
             callback: (PostgresChangePayload payload) {
-              setState(() {});
+              if (payload.newRecord.isNotEmpty) {
+                String id = payload.newRecord['id_empresa'].toString();
+                if (id == empresa.id_empresa.toString()) {
+                  setState(() {});
+                }
+              }
             })
         .subscribe();
   }

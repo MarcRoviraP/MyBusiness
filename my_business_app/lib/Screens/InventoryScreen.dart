@@ -103,7 +103,6 @@ class _InventoryscreenState extends State<Inventoryscreen> {
     var value2 = await Utils().getProducts();
     productos = value2.map((e) {
       Producto producto = Producto.fromJson(e);
-      producto.cantidad = e["inventario_producto"][0]["cantidad"];
       return producto;
     }).toList();
     for (var producto in productos) {
@@ -245,7 +244,7 @@ class _InventoryscreenState extends State<Inventoryscreen> {
                           pw.Container(
                             width: 100,
                             child: pw.Text(
-                              producto.cantidad.toString(),
+                              producto.inventario_producto!.cantidad.toString(),
                               textAlign: pw.TextAlign.left,
                               style: pw.TextStyle(fontSize: 12),
                             ),
@@ -261,7 +260,7 @@ class _InventoryscreenState extends State<Inventoryscreen> {
                           pw.Container(
                             width: 100,
                             child: pw.Text(
-                              "${(producto.precio * producto.cantidad).toStringAsFixed(2)} $simbolo",
+                              "${(producto.precio * producto.inventario_producto!.cantidad).toStringAsFixed(2)} $simbolo",
                               textAlign: pw.TextAlign.left,
                               style: pw.TextStyle(fontSize: 12),
                             ),
@@ -304,7 +303,7 @@ class _InventoryscreenState extends State<Inventoryscreen> {
     double total = 0;
     info.forEach((key, value) {
       for (var producto in value) {
-        total += producto.precio * producto.cantidad;
+        total += producto.precio * producto.inventario_producto!.cantidad;
       }
     });
     return total.toStringAsFixed(2);
