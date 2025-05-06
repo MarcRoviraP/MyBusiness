@@ -66,15 +66,3 @@ CREATE TABLE IF NOT EXISTS Invitacion_Empresa (
     estado VARCHAR(20) CHECK (estado IN ('Pendiente', 'Aceptada', 'Rechazada')) NOT NULL,
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-alter policy "Chat Policy"
-on "public"."chat_empresa"
-to public
-using (
- true
-);
-
-alter policy "Enable update for users based on email"
-on "public"."invitacion_empresa"
-to public
-using (true);
