@@ -72,9 +72,14 @@ class _EmployeesscreenState extends State<Employeesscreen> {
                             ),
                           ),
                           if (employee.id_usuario == usuario.id_usuario)
-                            const Icon(
-                              Icons.person,
-                              color: Colors.blue,
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  color: Colors.blue,
+                                ),
+                                const SizedBox(width: 23),
+                              ],
                             )
                           else
                             employee.rol == "Administrador"

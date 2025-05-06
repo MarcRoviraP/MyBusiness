@@ -125,5 +125,6 @@ class _EditbusinessdialogState extends State<Editbusinessdialog> {
       "descripcion": description,
       "url_img": url,
     });
+    picture = null;
   }
 }

@@ -35,14 +35,14 @@ class _BusinessscreenState extends State<Businessscreen> {
         ]
       : <Widget>[
           startBusinessScreen(),
-          Inventoryscreen(),
           Bussineschat(),
+          Inventoryscreen(),
         ];
 
   List<Widget> destinations = rol == "Administrador"
       ? <Widget>[
           NavigationDestination(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.business),
             label: LocaleKeys.BusinessScreen_start.tr(),
           ),
           NavigationDestination(
@@ -67,17 +67,17 @@ class _BusinessscreenState extends State<Businessscreen> {
         ]
       : <Widget>[
           NavigationDestination(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.business),
             label: LocaleKeys.BusinessScreen_start.tr(),
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.inventory_outlined),
-            label: LocaleKeys.BusinessScreen_inventory.tr(),
           ),
           NavigationDestination(
             icon: Icon(Icons.mark_unread_chat_alt_outlined),
             selectedIcon: Icon(Icons.mark_unread_chat_alt_sharp),
             label: LocaleKeys.BusinessScreen_chat.tr(),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.inventory_outlined),
+            label: LocaleKeys.BusinessScreen_inventory.tr(),
           ),
         ];
 
@@ -221,7 +221,7 @@ class _startBusinessScreenState extends State<startBusinessScreen> {
             ),
             Text(
               empresa.descripcion,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 15),
             ),
             SizedBox(
               height: 20,
@@ -229,6 +229,9 @@ class _startBusinessScreenState extends State<startBusinessScreen> {
             Text(
               LocaleKeys.BusinessScreen_join.tr(),
               style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              height: 20,
             ),
             Center(
               child: QrImageView(
@@ -238,52 +241,68 @@ class _startBusinessScreenState extends State<startBusinessScreen> {
                 backgroundColor: Colors.white,
               ),
             ),
-            Text(
-              "ID: ${empresa.id_empresa.toString()}",
-              style: TextStyle(fontSize: 20),
+            SizedBox(
+              height: 20,
             ),
-            TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title:
-                            Text(LocaleKeys.BusinessScreen_exit_business.tr()),
-                        content: Text(
-                            LocaleKeys.BusinessScreen_exit_business_text.tr()),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(LocaleKeys.CreateProducts_cancel.tr()),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              salirEmpresa(context).then((value) {
+            Card(
+              elevation: 20,
+              child: Container(
+                padding: EdgeInsets.all(8),
+                child: Text(
+                  "ID: ${empresa.id_empresa.toString()}",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Card(
+              color: Colors.redAccent,
+              child: TextButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(
+                              LocaleKeys.BusinessScreen_exit_business.tr()),
+                          content: Text(LocaleKeys
+                              .BusinessScreen_exit_business_text.tr()),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
                                 Navigator.of(context).pop();
-                                if (value) {
-                                  openNewScreen(context, MainScreen());
-                                } else {
-                                  customErrorSnackbar(
-                                      LocaleKeys.BusinessScreen_cannot_exit
-                                          .tr(),
-                                      context);
-                                }
-                              });
-                            },
-                            child: Text(
-                              LocaleKeys.BusinessScreen_exit.tr(),
-                              style: TextStyle(color: Colors.red),
+                              },
+                              child:
+                                  Text(LocaleKeys.CreateProducts_cancel.tr()),
                             ),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: Text(LocaleKeys.BusinessScreen_exit_business.tr())),
+                            TextButton(
+                              onPressed: () {
+                                salirEmpresa(context).then((value) {
+                                  Navigator.of(context).pop();
+                                  if (value) {
+                                    openNewScreen(context, MainScreen());
+                                  } else {
+                                    customErrorSnackbar(
+                                        LocaleKeys.BusinessScreen_cannot_exit
+                                            .tr(),
+                                        context);
+                                  }
+                                });
+                              },
+                              child: Text(
+                                LocaleKeys.BusinessScreen_exit.tr(),
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text(LocaleKeys.BusinessScreen_exit_business.tr())),
+            ),
           ],
         ),
       ),
