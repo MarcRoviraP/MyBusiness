@@ -218,7 +218,7 @@ class Inicio extends StatelessWidget {
                     child: AspectRatio(
                       aspectRatio: 16 / 9,
                       child: Video(
-                          url: 'https://www.youtube.com/watch?v=-pWSQYpkkjk'),
+                          url: 'https://youtu.be/SLl2tsmsyTs'),
                     ),
                   ),
                 ),
