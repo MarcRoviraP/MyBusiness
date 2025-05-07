@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi' hide Size;
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -10,7 +9,6 @@ import 'package:MyBusiness/Screens/MainScreen.dart';
 import 'package:MyBusiness/Screens/Register.dart';
 import 'package:MyBusiness/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 
 class Login extends StatefulWidget {

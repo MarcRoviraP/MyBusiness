@@ -1,5 +1,3 @@
-import 'package:MyBusiness/Class/Empresa.dart';
-import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:MyBusiness/Screens/SplashScreen.dart';
 import 'package:MyBusiness/Theme/Theme0063D8.dart';
 import 'package:MyBusiness/Theme/Theme63A002.dart';
@@ -12,13 +10,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:MyBusiness/API_SUPABASE/supabase_service.dart';
 import 'package:MyBusiness/Constants/constants.dart';
-import 'package:MyBusiness/Screens/Login.dart';
-import 'package:MyBusiness/Screens/MainScreen.dart';
-import 'package:flutter_launcher_icons/logger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:open_file/open_file.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();

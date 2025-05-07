@@ -3,13 +3,6 @@ import 'package:MyBusiness/Class/Usuario.dart';
 import 'package:MyBusiness/Constants/constants.dart';
 import 'package:MyBusiness/Screens/Login.dart';
 import 'package:MyBusiness/Screens/MainScreen.dart';
-import 'package:MyBusiness/Theme/Theme0063D8.dart';
-import 'package:MyBusiness/Theme/Theme63A002.dart';
-import 'package:MyBusiness/Theme/Theme949CAE.dart';
-import 'package:MyBusiness/Theme/ThemeB11AC1.dart';
-import 'package:MyBusiness/Theme/ThemeFF6D66.dart';
-import 'package:MyBusiness/Theme/ThemeFFDE3F.dart';
-import 'package:MyBusiness/Theme/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -41,8 +34,7 @@ class _SplashscreenState extends State<Splashscreen> {
         empresa = Empresa.fromJson(empresaList[0]);
       }
       String notif = await Utils().getSharedString(shared_notifications);
-        notifications = notif == "true" || notif == "";
-      
+      notifications = notif == "true" || notif == "";
     } catch (e) {}
 
     return mail;

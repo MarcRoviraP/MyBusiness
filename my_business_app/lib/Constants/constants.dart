@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:MyBusiness/Class/Categoria.dart';
 import 'package:MyBusiness/Class/Empresa.dart';
 import 'package:MyBusiness/Class/Producto.dart';
 import 'package:MyBusiness/Class/Usuario.dart';
