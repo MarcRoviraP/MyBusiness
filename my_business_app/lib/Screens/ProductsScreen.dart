@@ -211,11 +211,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 
   Future<void> loadInfo() async {
+    widget.listaProductos = [];
+    widget.listaProductosAux = [];
+    widget.listaCategorias = [];
+
     var value = await Utils().getCategories();
     widget.listaCategorias = value.map((e) => Categoria.fromJson(e)).toList();
 
     if (widget.listaCategorias.isEmpty) return;
-    if (currentCategory.isEmpty) {
+    // if (currentCategory.isEmpty) {
+    //   currentCategory = widget.listaCategorias[0].id_categoria.toString();
+    // }
+    if (widget.listaCategorias.isNotEmpty) {
       currentCategory = widget.listaCategorias[0].id_categoria.toString();
     }
     var value2 = await Utils().getProductsFromCategory(currentCategory);
