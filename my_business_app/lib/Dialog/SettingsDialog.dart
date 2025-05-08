@@ -21,9 +21,8 @@ class Settingsdialog extends StatefulWidget {
 }
 
 class _SettingsdialogState extends State<Settingsdialog> {
-  late String eleccionTema = "#FFDE3F";
+  late String eleccionTema = "";
   late String eleccionTemaAux = "";
-  
 
   @override
   void initState() {
@@ -34,7 +33,7 @@ class _SettingsdialogState extends State<Settingsdialog> {
   void _loadTheme() async {
     String theme = await Utils().getSharedString(shared_theme);
     setState(() {
-      eleccionTema = theme;
+      eleccionTema = theme == "" ? widget.listaColores[0] : theme;
       eleccionTemaAux = theme;
     });
   }
@@ -51,12 +50,16 @@ class _SettingsdialogState extends State<Settingsdialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: Icon(notifications ? Icons.notifications_active : Icons.notifications_off 
-            , color: notifications ? Colors.blue : const Color.fromARGB(255, 189, 191, 192)),
+            leading: Icon(
+                notifications
+                    ? Icons.notifications_active
+                    : Icons.notifications_off,
+                color: notifications
+                    ? Colors.blue
+                    : const Color.fromARGB(255, 189, 191, 192)),
             title: Text(LocaleKeys.SettingsDialog_notifi.tr()),
             onTap: () {
               setState(() {
-
                 notifications = !notifications;
                 if (notifications) {
                   Utils().setSharedString(shared_notifications, "true");

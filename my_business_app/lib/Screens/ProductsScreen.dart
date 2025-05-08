@@ -219,12 +219,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
     widget.listaCategorias = value.map((e) => Categoria.fromJson(e)).toList();
 
     if (widget.listaCategorias.isEmpty) return;
-    // if (currentCategory.isEmpty) {
-    //   currentCategory = widget.listaCategorias[0].id_categoria.toString();
-    // }
-    if (widget.listaCategorias.isNotEmpty) {
+    if (currentCategory.isEmpty) {
       currentCategory = widget.listaCategorias[0].id_categoria.toString();
     }
+    //if (widget.listaCategorias.isNotEmpty) {
+    //  currentCategory = widget.listaCategorias[0].id_categoria.toString();
+    //}
     var value2 = await Utils().getProductsFromCategory(currentCategory);
     widget.listaProductos = value2.map((e) {
       Producto producto = Producto.fromJson(e);
