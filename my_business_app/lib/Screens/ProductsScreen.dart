@@ -155,15 +155,20 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     }
                     widget.listaProductosAux = widget.listaProductos.map((e) {
                       Producto producto = Producto(
-                        id_producto: e.id_producto,
-                        nombre: e.nombre,
-                        descripcion: e.descripcion,
-                        precio: e.precio,
-                        url_img: e.url_img,
-                        id_categoria: e.id_categoria,
-                        id_empresa: e.id_empresa,
-                        inventario_producto: e.inventario_producto,
-                      );
+                          id_producto: e.id_producto,
+                          nombre: e.nombre,
+                          descripcion: e.descripcion,
+                          precio: e.precio,
+                          url_img: e.url_img,
+                          id_categoria: e.id_categoria,
+                          id_empresa: e.id_empresa,
+                          inventario_producto: Inventario_producto(
+                            id_inventario_producto:
+                                e.inventario_producto!.id_inventario_producto,
+                            id_inventario: e.inventario_producto!.id_inventario,
+                            id_producto: e.inventario_producto!.id_producto,
+                            cantidad: e.inventario_producto!.cantidad,
+                          ));
                       return producto;
                     }).toList();
                     saveProducts();
