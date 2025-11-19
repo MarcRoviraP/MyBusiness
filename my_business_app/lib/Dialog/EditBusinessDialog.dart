@@ -40,8 +40,8 @@ class _EditbusinessdialogState extends State<Editbusinessdialog> {
                     child: ClipOval(
                       child: picture == null
                           ? CachedNetworkImage(
-                              imageUrl:
-                                  "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketBusiness/${empresa.url_img}",
+                              imageUrl: 
+                                  "https://$idSupabase.supabase.co/storage/v1/object/public/$bucketBusiness/${empresa.url_img}",
                               width: 200,
                               height: 200,
                               fit: BoxFit.cover,

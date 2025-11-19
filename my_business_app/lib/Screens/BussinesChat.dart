@@ -161,12 +161,12 @@ class _BussineschatState extends State<Bussineschat> {
                                             barrierDismissible: true,
                                             builder: (context) => ShowImage(
                                                 url:
-                                                    "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}"),
+                                                    "https://$idSupabase.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}"),
                                           );
                                         },
                                         child: CachedNetworkImage(
                                           imageUrl:
-                                              "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}",
+                                              "https://$idSupabase.supabase.co/storage/v1/object/public/$bucketChat//${message.imagen_url}",
                                           width: 200,
                                           placeholder: (context, url) =>
                                               CircularProgressIndicator(),

@@ -200,13 +200,13 @@ class _startBusinessScreenState extends State<startBusinessScreen> {
                         barrierDismissible: true,
                         builder: (context) => ShowImage(
                             url:
-                                "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketBusiness//${empresa.url_img}"),
+                                "https://$idSupabase.supabase.co/storage/v1/object/public/$bucketBusiness//${empresa.url_img}"),
                       );
                     },
                     child: ClipOval(
                       child: CachedNetworkImage(
                         imageUrl:
-                            "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketBusiness/${empresa.url_img}",
+                            "https://$idSupabase.supabase.co/storage/v1/object/public/$bucketBusiness/${empresa.url_img}",
                         width: 200,
                         height: 200,
                         fit: BoxFit.cover,

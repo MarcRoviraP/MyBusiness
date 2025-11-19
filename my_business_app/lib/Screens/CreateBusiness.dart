@@ -121,10 +121,7 @@ class _CreatebusinessState extends State<Createbusiness> {
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
-                height: 250,
-                width: double.infinity,
-                child: MapaEmpresaWidget()),
+            
             const SizedBox(
               height: 40,
             ),

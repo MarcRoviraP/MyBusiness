@@ -207,21 +207,7 @@ class Inicio extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 24),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: Video(
-                          url: 'https://youtu.be/SLl2tsmsyTs'),
-                    ),
-                  ),
-                ),
+                
                 const SizedBox(height: 24),
                 ElevatedButton.icon(
                   onPressed: () {

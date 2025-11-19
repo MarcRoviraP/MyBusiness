@@ -300,7 +300,7 @@ class _cardProductsState extends State<cardProducts> {
   @override
   Widget build(BuildContext context) {
     var imageUrl =
-        "https://cghpzfumlnoaxhqapbky.supabase.co/storage/v1/object/public/$bucketProducts//${widget.producto.url_img}";
+        "https://$idSupabase.supabase.co/storage/v1/object/public/$bucketProducts//${widget.producto.url_img}";
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
       child: Card(

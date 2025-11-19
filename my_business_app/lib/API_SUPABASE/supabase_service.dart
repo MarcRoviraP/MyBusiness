@@ -15,7 +15,7 @@ class SupabaseService {
 
   Future<void> init() async {
     await Supabase.initialize(
-      url: "https://cghpzfumlnoaxhqapbky.supabase.co",
+      url: "https://dnkuaktsqwyjfaoxkgnf.supabase.co",
       anonKey: token,
     );
     supabase = Supabase.instance.client;
